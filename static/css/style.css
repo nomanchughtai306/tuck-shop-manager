@@ -1,0 +1,1401 @@
+/* =========================================
+   1. VARIABLES & RESET (Modern Color Palette)
+   ========================================= */
+:root {
+    --primary: #ffffff;
+    /* Indigo Blue */
+    --primary-dark: #4338ca;
+    --accent: #10B981;
+    /* Emerald Green for Money/Success */
+    --danger: #EF4444;
+    /* Red for errors/delete */
+    --bg-body: #011210;
+    /* Light Gray Background */
+    --bg-card: #021a17;
+    --text-main: #FFFFFF;
+    /* Almost Black */
+    --text-muted: #6B7280;
+    /* Gray Text */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 40px;
+    /* Space at bottom */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* =========================================
+   2. NAVBAR (Glassmorphism Effect)
+   ========================================= */
+.navbar {
+    background: #021a17;
+
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    padding-top: 0%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo Styling */
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-logo span {
+    font-size: 1.8rem;
+}
+
+.nav-logo b {
+    color: var(--primary);
+}
+
+/* Navigation Links (Desktop) */
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-item {
+    font-weight: 500;
+    color: #cab0b0;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.nav-item:hover {
+    color: rgb(172, 172, 14);
+    font-weight: 700;
+}
+
+/* Animated underline on hover */
+.nav-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}
+
+/* Auth Buttons */
+.nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+/* Mobile Menu Button (Hidden by default) */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+/* =========================================
+   3. BUTTONS
+   ========================================= */
+.btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: #00a027;
+    color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary:hover {
+    background-color: #047506;
+    transform: translateY(-1px);
+}
+
+.btn-logout {
+    background-color: #FEE2E2;
+    color: var(--danger);
+}
+
+.btn-logout:hover {
+    background-color: #FECACA;
+}
+
+/* =========================================
+   4. DASHBOARD CONTAINER & FLASH MESSAGES
+   ========================================= */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Flash Messages Animation */
+.flashes {
+    margin-bottom: 2rem;
+}
+
+.flash-item {
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    animation: slideIn 0.4s ease-out forwards;
+    box-shadow: var(--shadow-sm);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.flash-success {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border-left: 5px solid var(--accent);
+}
+
+.flash-error {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border-left: 5px solid var(--danger);
+}
+
+.flash-info {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+    border-left: 5px solid var(--primary);
+}
+
+/* =========================================
+   5. RESPONSIVE DESIGN (Mobile Magic)
+   ========================================= */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        /* Hidden by default on mobile */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #000000;
+        flex-direction: row;
+        padding: 1rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid #eee;
+    }
+
+    /* Class added by JavaScript to show menu */
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-item {
+        display: block;
+        padding: 1rem;
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .nav-item:hover {
+        color: #aab600;
+    }
+
+    .nav-item::after {
+        display: none;
+    }
+
+    /* Remove underline on mobile */
+
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .nav-auth {
+        /* On mobile, usually put logout in the menu, but keeping it visible is ok too */
+        font-size: 0.9rem;
+    }
+}
+
+
+
+/* =========================================
+   6. DASHBOARD HEADER & FILTERS
+   ========================================= */
+.main-header {
+    padding: 5px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.brand b {
+    color: var(--primary);
+}
+
+.date-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #000600;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    flex-wrap: wrap;
+}
+
+.filter-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.date-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.form-input {
+    padding: 0.5rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    font-family: inherit;
+    color: #eeeeee;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.filter-separator {
+    color: #9CA3AF;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-secondary {
+    background-color: #700303;
+    border: 1px solid #D1D5DB;
+    color: var(--text-main);
+}
+
+.btn-secondary:hover {
+    background-color: #700303;
+    border-color: #9CA3AF;
+}
+
+/* =========================================
+   7. STATS CARDS (Top Row)
+   ========================================= */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: #000600;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-card.border-primary {
+    border-top: 8px solid var(--accent);
+}
+
+.stat-card.border-accent {
+    border-top: 8px solid var(--accent);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.2rem;
+}
+
+.stat-sub {
+    font-size: 0.90rem;
+    color: #ffffff;
+}
+
+.highlight-accent {
+    color: var(--text-main);
+}
+
+.stat-focus {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.2rem;
+}
+
+.accent-text {
+    color: #16b601;
+    font-weight: 700;
+}
+
+/* =========================================
+   8. CONTENT GRID & PANELS
+   ========================================= */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    /* Main content + Sidebar */
+    gap: 1.5rem;
+}
+
+/* Make the top panel span full width if needed, or adjust grid above */
+.grid-full {
+    grid-column: 1 / -1;
+}
+
+.panel {
+    background: #021a17;
+    margin-top: 20px;
+    border-top: 3px solid rgb(0, 0, 0);
+    border-bottom: 3px solid rgb(0, 0, 0);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.panel-title {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 0.8rem;
+}
+
+/* Product Performance Grid (Mini Cards) */
+.performance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.prod-card {
+    border: 1px solid #0acf86;
+    border-radius: 12px;
+    padding: 1rem;
+    background: #000000;
+}
+
+.prod-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.prod-card-header strong {
+    font-size: 1rem;
+}
+
+.prod-card-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+}
+
+/* Progress Bar */
+.progress-bar-bg {
+    height: 8px;
+    background-color: #E5E7EB;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: var(--primary);
+    width: 0%;
+    /* JS sets this */
+    transition: width 1s ease-out;
+    border-radius: 4px;
+}
+
+.progress-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* =========================================
+   9. FORMS (Add Stock)
+   ========================================= */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    color: var(--text-main);
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.7rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* =========================================
+   10. INVENTORY TABLE
+   ========================================= */
+.inventory-panel {
+    overflow: hidden;
+}
+
+/* Contain table overflow */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    /* Scroll horizontally on small screens */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+    /* Force scroll on very small screens */
+}
+
+th,
+td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+th {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #f7f7f7;
+    font-weight: 600;
+    background-color: #000000;
+    border: #ffffff solid 1px;
+    border-radius: 12px;
+
+}
+
+td strong {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+td .text-muted {
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Badges */
+.badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: #ECFDF5;
+    color: #065F46;
+}
+
+.badge-danger {
+    background-color: #FEF2F2;
+    color: #991B1B;
+}
+
+/* Update Sales Input in Table */
+.input-small {
+    width: 70px;
+    padding: 0.4rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.btn-icon {
+    background: #00a027;
+    color: white;
+    width: 30px;
+    height: 37px;
+    margin-top: 10px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: 00a027;
+    transform: scale(1.1);
+}
+
+.delete-link {
+    color: #D1D5DB;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.delete-link:hover {
+    color: var(--danger);
+}
+
+/* =========================================
+   11. MODAL (Delete Confirmation)
+   ========================================= */
+.modal-overlay {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.modal-content h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+}
+
+.modal-content p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-danger-modal {
+    background-color: var(--danger);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-danger-modal:hover {
+    background-color: #DC2626;
+}
+
+/* =========================================
+   12. RESPONSIVE BREAKPOINTS
+   ========================================= */
+
+
+@media (max-width: 768px) {
+    .badge-success {
+        display: flex;
+        background-color: #ECFDF5;
+        color: #065F46;
+    }
+    .badge {
+    padding: 6px 2.5px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+    .main-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        border: none;
+        padding: 0%;
+    }
+
+    .date-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-inputs {
+        flex-direction: column;
+    }
+
+    .filter-actions {
+        justify-content: stretch;
+    }
+
+    .filter-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stack stats on phone */
+}
+
+
+/* =========================================
+   13. CUSTOM SCROLL ZONES (Added Request)
+   ========================================= */
+
+/* --- 1. Inventory Table Scrolling --- */
+.inventory-panel .table-container {
+    /* Laptop/Desktop: Approx height for 9 rows */
+    max-height: 650px;
+    overflow-y: auto;
+    /* Adds vertical scrollbar */
+    position: relative;
+}
+
+.inventory-panel table {
+    border-collapse: separate;
+    border-spacing: 15px 0;
+
+}
+
+/* Make Table Headers Sticky */
+.inventory-panel table th {
+    position: sticky;
+    top: 0;
+
+    z-index: 10;
+    /* Ensure header matches background so content doesn't show through */
+    background-color: #00000047;
+    color: #ffffff;
+    border: solid 1px #00ff32;
+
+
+    box-shadow: 0 3px 5px rgba(78, 67, 67, 0.5);
+    /* Shadow to separate header from scrolling rows */
+
+}
+
+/* --- 2. Performance Grid Scrolling --- */
+.performance-grid {
+    /* Laptop: Assuming 3 columns, 9 cards = 3 rows. Approx 550px height */
+    max-height: 550px;
+    overflow-y: auto;
+    padding-right: 10px;
+    /* Prevent scrollbar from covering card edge */
+}
+
+/* --- Mobile Adjustments --- */
+@media (max-width: 768px) {
+
+    /* Inventory Table: Approx height for 4 rows on phone */
+    .inventory-panel .table-container {
+        max-height: 320px;
+    }
+
+    /* Performance Grid: On phone (1 column), 6 cards = 6 rows. 
+       Cards are tall, so we need more height here. */
+    .performance-grid {
+        max-height: 800px;
+    }
+}
+
+#add-product-form input {
+    color: #ffffff;
+    background-color: #000000;
+
+
+}
+
+#lo input {
+    color: #ffffff;
+    background-color: #000000;
+
+}
+
+#inventory-section input {
+    color: #ffffff;
+    background-color: #000000;
+
+}
+
+    /* Rates Panel Styling */
+.rates-panel {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.panel-header h3 { color: var(--text-main); margin: 0; }
+.text-muted { color: var(--text-muted); font-size: 0.9rem; }
+
+/* Search Bar */
+.search-box {
+    position: relative;
+    max-width: 300px;
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: white;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-box input:focus { border-color: var(--accent); }
+.search-box .search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+}
+
+/* Table Styling */
+.rates-table { width: 100%;  border-collapse: separate;
+    border-spacing: 15px 0; }
+.rates-table th { text-align: left;  color: var(--text-main); border: 0cap; border:  1px solid #00ff32; }
+.rates-table td { padding: 12px; color: var(--text-main); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.rates-table th {
+        position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #00000047;
+    color: #fdfdfd;
+    box-shadow: 0 3px 5px rgba(78, 67, 67, 0.5);
+}
+#ratesBody tr {
+    color: white;
+}
+/* Trend Indicators */
+.trend-up { color: #ef4444; }   /* Red for price hike */
+.trend-down { color: #10b981; } /* Green for price drop */
+.trend-stable { color: #f59e0b; } /* Orange for stable */
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+
+    /* 1. Ensure the container allows scrolling */
+    .rates-panel {
+        overflow-x: auto;
+        /* Enable horizontal scroll */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
+        margin-bottom: 1rem;
+        border-radius: var(--radius);
+        background: var(--bg-card);
+        padding: 5px;
+    }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #fc9005, #970101);
+    width: 0;
+    transition: width 1s ease-in-out;
+}
+
+.prod-card {
+    /* background: rgba(74, 43, 3, 0.15); */
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.date-group {
+    display: flex;
+    flex-direction: column;
+    background: rgba(1, 18, 16, 0.6);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    min-width: 130px;
+    transition: var(--transition);
+}
+
+.delete-link {
+    color: var(--danger);
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+
+.d {
+    color: #000000;
+}
+
+
+
+
+/* =========================================
+   LOGO IMAGE STYLING
+   ========================================= */
+.brand {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    /* Ensures it aligns with the filter form */
+}
+.brand-logo {
+    /* height: 105px;      Set the height you want for desktop */
+    height: 65px;
+    /* Maintains aspect ratio */
+    display: block;
+    transition: transform 0.3s ease;
+}
+.logogo{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+
+.brand-img {
+    /* height: 105px;      Set the height you want for desktop */
+    width: 305px;
+    /* Maintains aspect ratio */
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.brand-img:hover {
+    transform: scale(1.05);
+    /* Slight "pop" effect on hover */
+}
+
+.logtext {
+
+    min-height: 140px;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.logtext span {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+
+/* Responsive adjustment for small screens */
+@media (max-width: 768px) {
+    .logtext {
+        min-height: 40px;
+        flex-direction: row;
+    }
+    .logogo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+    .brand {
+        justify-content: center;
+        /* Centers logo on mobile if header stacks */
+        margin-bottom: 0.5rem;
+    }
+
+    .brand-img {
+        width: 285px;
+        /* Slightly smaller on phones */
+    }
+}
+
+
+
+
+
+
+
+/* Ensure the inventory section feels "Main Stage" on the product page */
+#inventory-section.grid-full {
+    grid-column: 1 / -1;
+    margin-top: 2rem;
+}
+
+/* Optional: Adjust the table container height for the new page 
+   if you want it to show more rows than the dashboard did */
+#inventory-section .table-container {
+    max-height: 800px;
+    /* Slightly taller since it's the main focus now */
+}
+
+
+
+
+
+
+
+
+
+
+
+/* --- General Layout --- */
+.dashboard-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* --- Summary Card --- */
+.summary-card {
+    background: #000000;
+    border-left: 5px solid #00831c;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.summary-label {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.summary-value {
+    color: #ff0000;
+    margin: 0.5rem 0;
+    font-size: 2.0rem;
+}
+
+/* --- Form Styling --- */
+.loan-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+textarea {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+#loanForm input {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.full-width-group {
+    margin-top: 15px;
+}
+
+.btn-submit-loan {
+    width: 15%;
+    
+    margin-top: 15px;
+    padding: 12px;
+    font-weight: bold;
+}
+
+/* --- Table Styling --- */
+.loan-table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    width: 100%;
+}
+
+.loan-table th {
+    padding: 12px;
+    text-align: left;
+    background: #f8f9fa;
+    color: #555;
+    border-bottom: 2px solid #eee;
+}
+
+.loan-table td {
+    padding: 5px;
+    /* background: #000000; */
+    padding-top: 20px;
+
+
+    vertical-align: middle;
+}
+
+.loan-table tr td:first-child {
+    /* border-left: 1px solid #eee; */
+    border-radius: 8px 0 0 8px;
+}
+
+.loan-table tr td:last-child {
+    /* border-right: 1px solid #eee; */
+    border-radius: 0 8px 8px 0;
+}
+
+.status-paid {
+    color: #ffffffe8;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+
+    padding: 5px;
+    border-bottom: #0dff05 1px solid;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.status-pending {
+    color: #ff0000;
+    font-weight: bold;
+}
+
+/* --- Action Buttons --- */
+.action-flex {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-receive {
+    background: #129501b0;
+    color: white;
+
+}
+
+.btn-notify {
+    background: #056d2c;
+    color: white;
+}
+
+.btn-sm {
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.75rem;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-x {
+    color: #e70000;
+    text-decoration: none;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* --- History Section --- */
+.history-panel {
+    margin-top: 3rem;
+    background: #021a17;
+    border-top: 3px solid #000301;
+    /* opacity: 0.85; */
+}
+
+
+
+
+/* =========================================
+   MOBILE DESIGN: HORIZONTAL SCROLLING
+   ========================================= */
+@media (max-width: 768px) {
+
+    /* 1. Ensure the container allows scrolling */
+    .table-responsive-wrapper {
+        overflow-x: auto;
+        /* Enable horizontal scroll */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
+        margin-bottom: 1rem;
+        border-radius: var(--radius);
+        background: var(--bg-card);
+        padding: 5px;
+    }
+    .btn-submit-loan {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    font-weight: bold;
+}
+
+    /* 2. Revert Table to standard behavior */
+    .loan-table {
+        display: table !important;
+        /* Force table layout */
+        min-width: 700px;
+        /* Force scroll by being wider than the screen */
+        border-spacing: 0;
+    }
+
+    /* 3. Show Headers again */
+    .loan-table thead {
+        display: table-header-group !important;
+    }
+
+    .loan-table tr {
+        display: table-row !important;
+        background: transparent !important;
+        border: none !important;
+    }
+
+    .loan-table td,
+    .loan-table th {
+        display: table-cell !important;
+        white-space: nowrap;
+        /* Prevents text from wrapping and squishing content */
+        padding: 12px 10px;
+        text-align: left;
+    }
+
+    /* 4. Remove the "Card Labels" logic */
+    .loan-table td::before {
+        display: none !important;
+        /* Hide the labels used for cards */
+    }
+
+    /* 5. Handle long product lists */
+    td[data-label="Products"] {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /* Adds "..." if product text is too long */
+        white-space: nowrap;
+    }
+
+    /* 6. Fix Action Buttons for Horizontal Row */
+    .action-flex {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        justify-content: flex-start;
+    }
+
+    .btn-sm {
+        padding: 6px 10px !important;
+        width: auto !important;
+        font-size: 0.7rem;
+    }
+
+    /* 7. History Section Tweaks */
+    .history-panel .loan-table td {
+        opacity: 0.9;
+    }
+}
+
+strong {
+    text-transform: capitalize;
+
+}
+
+@media (max-width: 1024px) {
+    
+    /* Tablet: Stack the sidebar below the main content */
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}

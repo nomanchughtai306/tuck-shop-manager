@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Login - Loan Tracker{% endblock %}
+
+{% block content %}
+<style>
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh; /* Increased height for better centering */
+        padding: 20px;
+    }
+
+    .auth-card {
+        background: var(--bg-card);
+        padding: 2.5rem;
+        border-radius: var(--radius);
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: var(--shadow-md);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .auth-header h2 {
+        color: var(--text-main);
+        font-size: 1.8rem;
+    }
+
+    .auth-header p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .form-group label {
+        color: var(--text-main);
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    .auth-input {
+        width: 100%;
+        padding: 12px;
+        background: #000;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 1.5rem;
+        transition: border-color 0.3s;
+    }
+
+    .auth-input:focus {
+        outline: none;
+        border-color: var(--accent);
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    /* Added footer link styling to match register page */
+    .footer-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .footer-link a { 
+        color: var(--accent); 
+        font-weight: 600; 
+        text-decoration: none;
+    }
+    
+    .footer-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2>Welcome Back 👋</h2>
+            <p>Please enter your details to login</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" class="auth-input" placeholder="Enter username" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="auth-input" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-login">Login to Dashboard</button>
+        </form>
+
+        <!-- New Register Link -->
+        <div class="footer-link">
+            Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block title %}Loan Tracker{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<div class="dashboard-container">
+    
+    <div class="summary-card">
+        <span class="summary-label">Total Pending Loan Amount</span>
+        <h1 class="summary-value">PKR {{ "%.2f"|format(unpaid|sum(attribute='amount')) }}</h1>
+    </div>
+
+    <div class="panel inventory-panel">
+        <span class="panel-title">New Loan Entry</span>
+        <form action="/add_loan" method="POST" id="loanForm">
+            <div class="loan-form-grid">
+                <div class="form-group">
+                    <label>Customer Name</label>
+                    <input type="text" name="customer_name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" name="phone_number" class="form-input" placeholder="03xx-xxxxxxx" required>
+                </div>
+                <div class="form-group">
+                    <label>Total Amount (PKR)</label>
+                    <input type="number" step="0.01" name="amount" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-group full-width-group">
+                <label>Products Taken</label>
+                <textarea name="product_taken" class="form-input" rows="2" placeholder="List items here..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-submit-loan">Save Loan</button>
+        </form>
+    </div>
+
+    <div class="panel inventory-panel">
+        <span class="panel-title">⚠️ Pending Collection</span>
+        <div class="table-responsive-wrapper">
+            <table class="loan-table">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>PH Number</th>
+                        <th>Products</th>
+                        <th>Amount</th>
+                        <th>Date/Time</th>
+                        <th>Action</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in unpaid %}
+                    <tr>
+                        <td data-label="Customer">
+                            <strong>{{ loan.customer_name }}</strong><br>
+                            
+                        </td>
+                        <td>{{ loan.phone_number }} </td>
+                        <td data-label="Products">{{ loan.product_taken }}</td>
+                        <td data-label="Amount" class="status-pending">PKR {{ "%.2f"|format(loan.amount) }}</td>
+                        <td data-label="Date">{{ loan.date_added.strftime('%d %b, %I:%M %p') }}</td>
+                        <td data-label="Action">
+                            <div class="action-flex">
+                                <button class="btn-sm btn-receive" onclick="confirmPayment('{{ url_for('mark_paid', id=loan.id) }}', '{{ loan.customer_name }}')">
+                                    RECEIVE ✔
+                                </button>
+                                <a href="{{ url_for('send_whatsapp', id=loan.id) }}" target="_blank" class="btn-sm btn-notify">
+                                    NOTIFY 📱
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" style="text-align: center; padding: 2rem; color: #999;">No pending loans found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if history %}
+    <div class="panel inventory-panel history-panel">
+        <span class="panel-title" style="color: #27ae60;">✅ Recently Paid History</span>
+        <div class="table-responsive-wrapper">
+            <table class="loan-table">
+                <tbody>
+                    {% for item in history %}
+                    <tr>
+                        <td data-label="Customer"><strong>{{ item.customer_name }}</strong></td>
+                        <td data-label="Products"><small>{{ item.product_taken }}</small></td>
+                        <td data-label="Amount">PKR {{ item.amount }}</td>
+                        <td data-label="Status" class="status-paid">PAID</td>
+                        <td data-label="Action">
+                            <button class="delete-x" onclick="confirmDelete('{{ url_for('delete_loan', id=item.id) }}')">&times;</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // 1. Beautiful Confirmation for Receiving Payment
+    function confirmPayment(url, name) {
+        Swal.fire({
+            title: 'Confirm Payment?',
+            text: `Are you sure ${name} has paid the full amount?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#2ecc71',
+            cancelButtonColor: '#95a5a6',
+            confirmButtonText: 'Yes, Received!',
+            cancelButtonText: 'Not yet'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    }
+
+    // 2. Beautiful Confirmation for Deleting History
+    function confirmDelete(url) {
+        Swal.fire({
+            title: 'Delete Permanently?',
+            text: "This record will be removed from your history forever!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e74c3c',
+            cancelButtonColor: '#95a5a6',
+            confirmButtonText: 'Delete Now',
+            cancelButtonText: 'Keep it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    }
+
+    // 3. Optional: Success Toast if you use Flask Flash messages
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: '{{ "success" if category == "success" else "error" }}',
+            title: '{{ message }}',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</script>
+
+{% endblock %}

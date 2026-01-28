@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Daily Grocery Rates{% endblock %}
+
+{% block content %}
+
+<div class="panel rates-panel">
+    <div class="panel-header">
+        <div class="header-left">
+            <h3>🛒 Daily Grocery Rates (PKR)</h3>
+            <p class="text-muted">Updated daily from local market</p>
+        </div>
+        <div class="search-box">
+            <input type="text" id="rateSearch" placeholder="Search items (e.g., Tomato)..." onkeyup="filterRates()">
+            <span class="search-icon">🔍</span>
+        </div>
+    </div>
+
+    <div class="rates-container">
+        <div id="loading" class="loading-spinner">
+            <div class="spinner"></div> Loading rates...
+        </div>
+
+        <div class="table-responsive">
+            <table class="table rates-table" id="ratesTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Price (PKR)</th>
+                        <th>Unit</th>
+                        <th>Trend</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="ratesBody">
+                    </tbody>
+            </table>
+        </div>
+        
+        <div id="noResults" style="display:none; text-align:center; padding: 20px; color: var(--text-muted);">
+            No items found.
+        </div>
+    </div>
+</div>
+<script>
+    // 1. Fetch Data on Load
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchRates();
+    });
+
+    let allRates = []; // Store data globally for filtering
+
+    async function fetchRates() {
+        const loading = document.getElementById('loading');
+        const table = document.getElementById('ratesTable');
+        
+        try {
+            // Simulating an API call to our local JSON file
+            const response = await fetch("{{ url_for('static', filename='rates.json') }}");
+            
+            if (!response.ok) throw new Error("Failed to load rates");
+            
+            allRates = await response.json();
+            renderRates(allRates);
+            
+            loading.style.display = 'none';
+            table.style.display = 'table';
+            
+        } catch (error) {
+            console.error(error);
+            loading.innerHTML = `<span style="color:var(--danger)">⚠️ Unable to load rates. Please try again later.</span>`;
+        }
+    }
+
+    // 2. Render Table Function
+    function renderRates(data) {
+        const tbody = document.getElementById('ratesBody');
+        const noResults = document.getElementById('noResults');
+        tbody.innerHTML = '';
+
+        if (data.length === 0) {
+            noResults.style.display = 'block';
+            document.getElementById('ratesTable').style.display = 'none';
+            return;
+        } else {
+            noResults.style.display = 'none';
+            document.getElementById('ratesTable').style.display = 'table';
+        }
+
+        data.forEach(item => {
+            // Determine Icon based on trend
+            let trendIcon = '➖';
+            let trendClass = 'trend-stable';
+            
+            if (item.trend === 'up') { trendIcon = '🔼'; trendClass = 'trend-up'; }
+            if (item.trend === 'down') { trendIcon = '🔽'; trendClass = 'trend-down'; }
+
+            const row = `
+                <tr>
+                    <td data-label="Item"><strong>${item.name}</strong></td>
+                    <td data-label="Price" style="font-size:1.1rem;">Rs. ${item.price}</td>
+                    <td data-label="Unit">${item.unit}</td>
+                    <td data-label="Trend"><span class="${trendClass}">${trendIcon} ${item.trend.toUpperCase()}</span></td>
+                    <td data-label="Date" style="color:var(--text-muted); font-size:0.85rem;">${item.date}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+
+    // 3. Search Filter Function
+    function filterRates() {
+        const query = document.getElementById('rateSearch').value.toLowerCase();
+        
+        const filtered = allRates.filter(item => 
+            item.name.toLowerCase().includes(query)
+        );
+        
+        renderRates(filtered);
+    }
+</script>
+{% endblock %}

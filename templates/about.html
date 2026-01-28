@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}About - Loan Tracker{% endblock %}
+
+{% block content %}
+<style>
+    /* --- About Page Specific Styles --- */
+    .about-header {
+        text-align: center;
+        padding: 3rem 1rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .about-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(90deg, #fff, var(--text-muted));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .about-header p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    /* Feature Grid */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .feature-card {
+        background: var(--bg-card);
+        padding: 2rem;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent);
+    }
+
+    .icon-wrapper {
+        width: 50px;
+        height: 50px;
+        background: rgba(16, 185, 129, 0.1); /* Low opacity accent color */
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+
+    .feature-card h3 {
+        margin-bottom: 0.8rem;
+        color: var(--text-main);
+    }
+
+    .feature-card p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    /* Developer Section */
+    .dev-section {
+        margin-top: 4rem;
+        text-align: center;
+        padding: 3rem;
+        background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.4));
+        border-radius: var(--radius);
+    }
+
+    .tech-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        margin: 5px;
+        background: #1f2937;
+        color: #9ca3af;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+</style>
+
+<div class="dashboard-container">
+    
+    <div class="about-header">
+        <h1>Simplify Your Shop Management</h1>
+        <p>
+            Loan Tracker is a purpose-built solution designed to replace messy paper notebooks. 
+            We help small business owners manage inventory, track customer credits, and generate 
+            insights—all from a simple, secure dashboard.
+        </p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="icon-wrapper">💸</div>
+            <h3>Smart Loan Tracking</h3>
+            <p>Never lose track of who owes you money. Mark items as "Pending" and clear them with a single click when paid.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="icon-wrapper">📱</div>
+            <h3>WhatsApp Reminders</h3>
+            <p>Send professional payment reminders directly to your customer's WhatsApp with an auto-generated receipt link.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="icon-wrapper">📊</div>
+            <h3>Real-Time Analytics</h3>
+            <p>Know your best-selling products and calculate your daily profit margins instantly without doing the math yourself.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="icon-wrapper">🔒</div>
+            <h3>Secure & Private</h3>
+            <p>Your data is protected with secure login authentication. Manage your business data with peace of mind.</p>
+        </div>
+    </div>
+
+    <div class="dev-section">
+        <h3 style="margin-bottom: 1rem;">Built with Modern Technology</h3>
+        <div>
+            <span class="tech-badge">Python Flask</span>
+            <span class="tech-badge">SQLAlchemy</span>
+            <span class="tech-badge">Jinja2</span>
+            <span class="tech-badge">ChartJS</span>
+        </div>
+        <br>
+        <p style="margin-top: 2rem; color: var(--text-muted);">
+            Developed by <strong>[Your Name]</strong> &copy; 2024
+        </p>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary" style="margin-top: 1rem;">Back to Dashboard</a>
+    </div>
+
+</div>
+{% endblock %}

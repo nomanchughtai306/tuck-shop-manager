@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TuckShop Pro | {% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+
+            <div class="logogo"><a href="/" class="nav-logo">
+
+                    <span>⚡</span> TuckShop<b>Pro</b>
+                </a> <span><a href="/">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CalculatePro Logo"
+                            class="brand-logo">
+                    </a></span></div>
+
+            <ul class="nav-links">
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('dashboard') }}" class="nav-item">Dashboard</a></li>
+                <li><a href="{{ url_for('products') }}" class="nav-item">Products</a></li>
+                <li><a href="{{ url_for('loans') }}" class="nav-item">Loan Track</a></li>
+                <li><a href="{{ url_for('about') }}" class="nav-item">About</a></li>
+                <li><a href="{{ url_for('rates') }}" class="nav-item">Grocery Rates</a></li>
+            </ul>
+
+            <div class="nav-auth">
+
+
+                <a href="/logout" class="btn btn-logout">Logout</a>
+                {% else %}
+
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                <li><a href="{{ url_for('about') }}" class="nav-item">About</a></li>
+                {% endif %}
+            </div>
+
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+            <li class="flash-item flash-{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        function toggleMobileMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>
