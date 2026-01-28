@@ -2,8 +2,43 @@
 {% block title %}Daily Grocery Rates{% endblock %}
 
 {% block content %}
+<div class="dashboard-container">
+    <div class="panel-header">
+        <h2>Market Rates Manager</h2>
+        <!-- Button to show/hide the form -->
+        <button class="btn btn-primary" onclick="toggleRateForm()">+ Add New Rate</button>
+    </div>
 
-<div class="panel rates-panel">
+    <!-- Hidden Input Form -->
+    <div id="addRateForm" class="panel" style="display: none; margin-bottom: 2rem; border: 1px solid var(--accent);">
+        <form action="{{ url_for('add_rate') }}" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
+            <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" name="name" class="form-inputt" placeholder="e.g. Onion (Pyaz)" required>
+            </div>
+            <div class="form-group">
+                <label>Price (PKR)</label>
+                <input type="number" name="price" class="form-inputt" placeholder="120" required>
+            </div>
+            <div class="form-group">
+                <label>Unit</label>
+                <input type="text" name="unit" class="form-inputt" placeholder="kg / dozen" required>
+            </div>
+            <div class="form-group">
+                <label>Trend</label>
+                <select name="trend" class="form-inputt">
+                    <option value="stable">Stable</option>
+                    <option value="up">Price Up 🔼</option>
+                    <option value="down">Price Down 🔽</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1.5rem;">Save Rate</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="panel rates-panel">
     <div class="panel-header">
         <div class="header-left">
             <h3>🛒 Daily Grocery Rates (PKR)</h3>
@@ -29,6 +64,7 @@
                         <th>Unit</th>
                         <th>Trend</th>
                         <th>Date</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="ratesBody">
@@ -41,7 +77,14 @@
         </div>
     </div>
 </div>
+</div>
+
 <script>
+    function toggleRateForm() {
+        const form = document.getElementById('addRateForm');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
     // 1. Fetch Data on Load
     document.addEventListener('DOMContentLoaded', () => {
         fetchRates();
@@ -54,7 +97,6 @@
         const table = document.getElementById('ratesTable');
         
         try {
-            // Simulating an API call to our local JSON file
             const response = await fetch("{{ url_for('static', filename='rates.json') }}");
             
             if (!response.ok) throw new Error("Failed to load rates");
@@ -86,8 +128,8 @@
             document.getElementById('ratesTable').style.display = 'table';
         }
 
-        data.forEach(item => {
-            // Determine Icon based on trend
+        // We use the index for the delete route
+        data.forEach((item, index) => {
             let trendIcon = '➖';
             let trendClass = 'trend-stable';
             
@@ -101,6 +143,11 @@
                     <td data-label="Unit">${item.unit}</td>
                     <td data-label="Trend"><span class="${trendClass}">${trendIcon} ${item.trend.toUpperCase()}</span></td>
                     <td data-label="Date" style="color:var(--text-muted); font-size:0.85rem;">${item.date}</td>
+                    <td data-label="Action">
+    <button class="btn-delete-link" onclick="openDeleteModal(${index})">
+       🗑️ Delete
+    </button>
+</td>
                 </tr>
             `;
             tbody.innerHTML += row;
@@ -117,5 +164,39 @@
         
         renderRates(filtered);
     }
+    let deleteIndex = null;
+
+function openDeleteModal(index) {
+    deleteIndex = index;
+    const modal = document.getElementById('deleteModal');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    
+    // Set the link for the "Yes, Delete" button
+    confirmBtn.href = `/delete_rate/${index}`;
+    
+    modal.style.display = 'flex';
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+// Close modal if user clicks outside the box
+window.onclick = function(event) {
+    const modal = document.getElementById('deleteModal');
+    if (event.target == modal) {
+        closeDeleteModal();
+    }
+}
 </script>
+<div id="deleteModal" class="custom-modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Confirm Deletion</h3>
+        <p>Are you sure you want to delete this rate? This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+            <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Yes, Delete</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

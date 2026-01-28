@@ -96,15 +96,24 @@ ul {
 }
 
 .nav-item {
-    font-weight: 500;
-    color: #cab0b0;
+    
+    color: #ffffff;
     transition: color 0.3s ease;
     position: relative;
+    font-size: 1.2rem;
+        font-weight: bolder;
+        margin: 4px ;
+        border: 2px rgba(255, 255, 255, 0) solid;
+         box-shadow: -1px 0 4px 1.2px #cac8c8d3;
+         padding: 10px;
 }
 
 .nav-item:hover {
-    color: rgb(172, 172, 14);
+    color: #70faff;
     font-weight: 700;
+    
+    
+    
 }
 
 /* Animated underline on hover */
@@ -172,12 +181,13 @@ ul {
 }
 
 .btn-logout {
-    background-color: #FEE2E2;
-    color: var(--danger);
+    background-color: #8a0303;
+    color: white;
 }
 
 .btn-logout:hover {
-    background-color: #FECACA;
+    background-color: #d60000;
+    color: white;
 }
 
 /* =========================================
@@ -230,66 +240,12 @@ ul {
 }
 
 .flash-info {
-    background-color: #DBEAFE;
-    color: #1E40AF;
+    background-color: #021a17;
+    color: #ffffff;
     border-left: 5px solid var(--primary);
 }
 
-/* =========================================
-   5. RESPONSIVE DESIGN (Mobile Magic)
-   ========================================= */
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        /* Hidden by default on mobile */
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: #000000;
-        flex-direction: row;
-        padding: 1rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        border-top: 1px solid #eee;
-    }
 
-    /* Class added by JavaScript to show menu */
-    .nav-links.active {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .nav-links li {
-        width: 100%;
-    }
-
-    .nav-item {
-        display: block;
-        padding: 1rem;
-        width: 100%;
-        border-radius: 8px;
-    }
-
-    .nav-item:hover {
-        color: #aab600;
-    }
-
-    .nav-item::after {
-        display: none;
-    }
-
-    /* Remove underline on mobile */
-
-
-    .mobile-menu-btn {
-        display: block;
-    }
-
-    .nav-auth {
-        /* On mobile, usually put logout in the menu, but keeping it visible is ok too */
-        font-size: 0.9rem;
-    }
-}
 
 
 
@@ -342,6 +298,16 @@ ul {
     font-size: 0.9rem;
     color: var(--text-muted);
     cursor: pointer;
+}
+
+.form-inputt {
+    padding: 0.5rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    font-family: inherit;
+    color: #eeeeee;
+    background-color: #000000;
+    transition: border-color 0.2s;
 }
 
 .form-input {
@@ -761,52 +727,6 @@ td .text-muted {
    ========================================= */
 
 
-@media (max-width: 768px) {
-    .badge-success {
-        display: flex;
-        background-color: #ECFDF5;
-        color: #065F46;
-    }
-    .badge {
-    padding: 6px 2.5px;
-    border-radius: 10px;
-    font-size: 0.75rem;
-    font-weight: 900;
-}
-
-    .main-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
-        border: none;
-        padding: 0%;
-    }
-
-    .date-filter-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .filter-inputs {
-        flex-direction: column;
-    }
-
-    .filter-actions {
-        justify-content: stretch;
-    }
-
-    .filter-actions .btn {
-        width: 100%;
-        text-align: center;
-    }
-
-    .stats-row {
-        grid-template-columns: 1fr;
-    }
-
-    /* Stack stats on phone */
-}
-
 
 /* =========================================
    13. CUSTOM SCROLL ZONES (Added Request)
@@ -853,20 +773,6 @@ td .text-muted {
     /* Prevent scrollbar from covering card edge */
 }
 
-/* --- Mobile Adjustments --- */
-@media (max-width: 768px) {
-
-    /* Inventory Table: Approx height for 4 rows on phone */
-    .inventory-panel .table-container {
-        max-height: 320px;
-    }
-
-    /* Performance Grid: On phone (1 column), 6 cards = 6 rows. 
-       Cards are tall, so we need more height here. */
-    .performance-grid {
-        max-height: 800px;
-    }
-}
 
 #add-product-form input {
     color: #ffffff;
@@ -887,7 +793,7 @@ td .text-muted {
 
 }
 
-    /* Rates Panel Styling */
+/* Rates Panel Styling */
 .rates-panel {
     background: var(--bg-card);
     padding: 1.5rem;
@@ -906,8 +812,15 @@ td .text-muted {
     margin-bottom: 1.5rem;
 }
 
-.panel-header h3 { color: var(--text-main); margin: 0; }
-.text-muted { color: var(--text-muted); font-size: 0.9rem; }
+.panel-header h3 {
+    color: var(--text-main);
+    margin: 0;
+}
+
+.text-muted {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
 
 /* Search Bar */
 .search-box {
@@ -927,7 +840,10 @@ td .text-muted {
     transition: border-color 0.3s;
 }
 
-.search-box input:focus { border-color: var(--accent); }
+.search-box input:focus {
+    border-color: var(--accent);
+}
+
 .search-box .search-icon {
     position: absolute;
     right: 15px;
@@ -937,40 +853,56 @@ td .text-muted {
 }
 
 /* Table Styling */
-.rates-table { width: 100%;  border-collapse: separate;
-    border-spacing: 15px 0; }
-.rates-table th { text-align: left;  color: var(--text-main); border: 0cap; border:  1px solid #00ff32; }
-.rates-table td { padding: 12px; color: var(--text-main); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.rates-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 15px 0;
+}
+
 .rates-table th {
-        position: sticky;
+    text-align: left;
+    color: var(--text-main);
+    border: 0cap;
+    border: 1px solid #00ff32;
+}
+
+.rates-table td {
+    padding: 12px;
+    color: var(--text-main);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rates-table th {
+    position: sticky;
     top: 0;
     z-index: 10;
     background-color: #00000047;
     color: #fdfdfd;
     box-shadow: 0 3px 5px rgba(78, 67, 67, 0.5);
 }
+
 #ratesBody tr {
     color: white;
 }
+
 /* Trend Indicators */
-.trend-up { color: #ef4444; }   /* Red for price hike */
-.trend-down { color: #10b981; } /* Green for price drop */
-.trend-stable { color: #f59e0b; } /* Orange for stable */
+.trend-up {
+    color: #ef4444;
+}
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
+/* Red for price hike */
+.trend-down {
+    color: #10b981;
+}
 
-    /* 1. Ensure the container allows scrolling */
-    .rates-panel {
-        overflow-x: auto;
-        /* Enable horizontal scroll */
-        -webkit-overflow-scrolling: touch;
-        /* Smooth scrolling on iOS */
-        margin-bottom: 1rem;
-        border-radius: var(--radius);
-        background: var(--bg-card);
-        padding: 5px;
-    }}
+/* Green for price drop */
+.trend-stable {
+    color: #f59e0b;
+}
+
+/* Orange for stable */
+
+
 
 
 
@@ -1049,6 +981,7 @@ td .text-muted {
     height: 100%;
     /* Ensures it aligns with the filter form */
 }
+
 .brand-logo {
     /* height: 105px;      Set the height you want for desktop */
     height: 65px;
@@ -1056,7 +989,8 @@ td .text-muted {
     display: block;
     transition: transform 0.3s ease;
 }
-.logogo{
+
+.logogo {
     display: flex;
     flex-direction: row-reverse;
 }
@@ -1092,29 +1026,6 @@ td .text-muted {
 }
 
 
-/* Responsive adjustment for small screens */
-@media (max-width: 768px) {
-    .logtext {
-        min-height: 40px;
-        flex-direction: row;
-    }
-    .logogo{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-    .brand {
-        justify-content: center;
-        /* Centers logo on mobile if header stacks */
-        margin-bottom: 0.5rem;
-    }
-
-    .brand-img {
-        width: 285px;
-        /* Slightly smaller on phones */
-    }
-}
 
 
 
@@ -1198,7 +1109,7 @@ textarea {
 
 .btn-submit-loan {
     width: 15%;
-    
+
     margin-top: 15px;
     padding: 12px;
     font-weight: bold;
@@ -1300,10 +1211,287 @@ textarea {
 
 
 
+
+strong {
+    text-transform: capitalize;
+
+}
+
+@media (max-width: 1024px) {
+
+    /* Tablet: Stack the sidebar below the main content */
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+#addRateForm {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 12px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#addRateForm .form-group {
+    margin-bottom: 0;
+    /* Keep compact for the grid */
+}
+
+#addRateForm label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Custom Modal Styles */
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--accent);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-danger {
+    background: #ff4757;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* Force the main container to stay horizontal */
+.nav-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 15px;
+}
+
+/* Group the Auth button and Toggle button together */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Space between Login/Logout and ☰ */
+}
+
+/* Ensure the Login/Logout box is always horizontal */
+.nav-auth {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+}
+
+
+
 /* =========================================
-   MOBILE DESIGN: HORIZONTAL SCROLLING
+   5. RESPONSIVE DESIGN (Mobile Magic)
    ========================================= */
 @media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        /* Hidden by default on mobile */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #000000;
+        flex-direction: row;
+        padding: 1rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid #eee;
+    }
+
+    /* Class added by JavaScript to show menu */
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-links li {
+        width: 60%;
+
+
+    }
+
+    .nav-item {
+        display: block;
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .nav-item:hover {
+        color: #aab600;
+    }
+
+    .nav-item::after {
+        display: none;
+    }
+
+    /* Remove underline on mobile */
+
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .nav-auth {
+        /* On mobile, usually put logout in the menu, but keeping it visible is ok too */
+        font-size: 0.9rem;
+    }
+
+    .badge-success {
+        display: flex;
+        background-color: #ECFDF5;
+        color: #065F46;
+    }
+
+    .badge {
+        padding: 6px 2.5px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 900;
+    }
+
+    .main-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        border: none;
+        padding: 0%;
+    }
+
+    .date-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-inputs {
+        flex-direction: column;
+    }
+
+    .filter-actions {
+        justify-content: stretch;
+    }
+
+    .filter-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stack stats on phone */
+
+    /* Inventory Table: Approx height for 4 rows on phone */
+    .inventory-panel .table-container {
+        max-height: 320px;
+    }
+
+    /* Performance Grid: On phone (1 column), 6 cards = 6 rows. 
+       Cards are tall, so we need more height here. */
+    .performance-grid {
+        max-height: 800px;
+    }
+
+    /* 1. Ensure the container allows scrolling */
+    .rates-panel {
+        overflow-x: auto;
+        /* Enable horizontal scroll */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
+        margin-bottom: 1rem;
+        border-radius: var(--radius);
+        background: var(--bg-card);
+        padding: 5px;
+    }
+
+    .logtext {
+        min-height: 40px;
+        flex-direction: row;
+    }
+
+    .logogo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .brand {
+        justify-content: center;
+        /* Centers logo on mobile if header stacks */
+        margin-bottom: 0.5rem;
+    }
+
+    .brand-img {
+        width: 285px;
+        /* Slightly smaller on phones */
+    }
+
 
     /* 1. Ensure the container allows scrolling */
     .table-responsive-wrapper {
@@ -1316,12 +1504,13 @@ textarea {
         background: var(--bg-card);
         padding: 5px;
     }
+
     .btn-submit-loan {
-    width: 100%;
-    margin-top: 15px;
-    padding: 12px;
-    font-weight: bold;
-}
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px;
+        font-weight: bold;
+    }
 
     /* 2. Revert Table to standard behavior */
     .loan-table {
@@ -1372,6 +1561,7 @@ textarea {
         display: flex;
         flex-direction: row;
         gap: 5px;
+
         justify-content: flex-start;
     }
 
@@ -1385,17 +1575,57 @@ textarea {
     .history-panel .loan-table td {
         opacity: 0.9;
     }
-}
 
-strong {
-    text-transform: capitalize;
+    .navbar {
+        background: #021a17;
 
-}
-
-@media (max-width: 1024px) {
-    
-    /* Tablet: Stack the sidebar below the main content */
-    .content-grid {
-        grid-template-columns: 1fr;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: var(--shadow-sm);
     }
+
+    .nav-links {
+        /* This ensures your actual menu (Dashboard, etc.) stays hidden 
+           until toggled, without breaking the top bar logo/login */
+        
+        /* Match your dark theme */
+        padding: 20px 0;
+        border-bottom: 2px solid #ffffff;
+        border-left: 2px solid #ffffff;
+        border-bottom-left-radius: 32px;
+        right: -100%;   /* Start completely hidden off-screen to the right */
+        left: auto;     /* Ensures it doesn't try to align to the left */
+        display: none;
+        box-shadow: -2px 0 7px #777171; /* Shadow on the left edge */
+    }
+
+    .nav-links.active {
+        display: flex;
+        justify-content: center;
+        
+        right: 0;
+        width: 80%;
+        background: var(--bg-card);
+
+
+    }
+
+    .nav-item {
+        font-size: 1.2rem;
+        font-weight: bolder;
+        margin: 4px ;
+        border: 2px rgb(255, 255, 255) solid;
+         box-shadow: -2px 0 7px #777171;
+         border: 2px rgba(255, 255, 255, 0) solid;
+         box-shadow: -2px 0 7px 1.2px #cac8c8d3;
+
+    }
+    .nav-item:hover {
+    color: rgb(245, 2, 2);
+    font-weight: 700;
+}
+
 }

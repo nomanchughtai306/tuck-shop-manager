@@ -15,39 +15,43 @@
 <body>
 
     <nav class="navbar">
-        <div class="nav-container">
+    <div class="nav-container">
+        <!-- 1. LOGO -->
+        <div class="logogo">
+            <a href="/" class="nav-logo">
+                <span>⚡</span> TuckShop<b>Pro</b>
+            </a>
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="brand-logo">
+            </a>
+        </div>
 
-            <div class="logogo"><a href="/" class="nav-logo">
-
-                    <span>⚡</span> TuckShop<b>Pro</b>
-                </a> <span><a href="/">
-                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CalculatePro Logo"
-                            class="brand-logo">
-                    </a></span></div>
-
-            <ul class="nav-links">
-                {% if current_user.is_authenticated %}
+        <!-- 2. NAV LINKS (Desktop) -->
+        <ul class="nav-links" id="navLinks">
+            {% if current_user.is_authenticated %}
                 <li><a href="{{ url_for('dashboard') }}" class="nav-item">Dashboard</a></li>
                 <li><a href="{{ url_for('products') }}" class="nav-item">Products</a></li>
                 <li><a href="{{ url_for('loans') }}" class="nav-item">Loan Track</a></li>
-                <li><a href="{{ url_for('about') }}" class="nav-item">About</a></li>
                 <li><a href="{{ url_for('rates') }}" class="nav-item">Grocery Rates</a></li>
-            </ul>
+            {% endif %}
+            <li><a href="{{ url_for('about') }}" class="nav-item">About</a></li>
+        </ul>
 
+        <!-- 3. AUTH & TOGGLE -->
+        <div class="nav-right">
             <div class="nav-auth">
-
-
-                <a href="/logout" class="btn btn-logout">Logout</a>
+                {% if current_user.is_authenticated %}
+                    <a href="/logout" class="btn btn-logout">Logout</a>
                 {% else %}
-
-                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
-                <li><a href="{{ url_for('about') }}" class="nav-item">About</a></li>
+                    <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
                 {% endif %}
             </div>
-
+            
+            <!-- Mobile Toggle -->
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <div class="dashboard-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -67,6 +71,7 @@
     <script>
         function toggleMobileMenu() {
             document.querySelector('.nav-links').classList.toggle('active');
+            
         }
     </script>
 </body>

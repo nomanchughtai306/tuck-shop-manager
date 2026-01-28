@@ -132,9 +132,11 @@
             title: 'Delete Permanently?',
             text: "This record will be removed from your history forever!",
             icon: 'warning',
+            background: '#021a17', // Dark theme background
+            color: '#ffffff',      // White text
             showCancelButton: true,
-            confirmButtonColor: '#e74c3c',
-            cancelButtonColor: '#95a5a6',
+            confirmButtonColor: '#ff4757', // Matching your delete red
+            cancelButtonColor: '#444',     // Dark grey for cancel
             confirmButtonText: 'Delete Now',
             cancelButtonText: 'Keep it'
         }).then((result) => {

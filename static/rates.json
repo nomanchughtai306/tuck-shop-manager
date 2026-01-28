@@ -1,12 +1,3 @@
 [
-    {"name": "Tomatoes (Tamatar)", "price": "180", "unit": "kg", "trend": "up", "date": "2023-10-27"},
-    {"name": "Onions (Pyaz)", "price": "120", "unit": "kg", "trend": "stable", "date": "2023-10-27"},
-    {"name": "Potatoes (Aloo)", "price": "85", "unit": "kg", "trend": "down", "date": "2023-10-27"},
-    {"name": "Ginger (Adrak)", "price": "900", "unit": "kg", "trend": "up", "date": "2023-10-27"},
-    {"name": "Garlic (Lehsan)", "price": "450", "unit": "kg", "trend": "up", "date": "2023-10-27"},
-    {"name": "Eggs (Desi)", "price": "350", "unit": "dozen", "trend": "stable", "date": "2023-10-27"},
-    {"name": "Chicken (Live)", "price": "480", "unit": "kg", "trend": "down", "date": "2023-10-27"},
-    {"name": "Sugar", "price": "160", "unit": "kg", "trend": "stable", "date": "2023-10-27"},
-    {"name": "Flour (Atta)", "price": "1400", "unit": "20kg", "trend": "stable", "date": "2023-10-27"},
-    {"name": "Rice (Basmati)", "price": "320", "unit": "kg", "trend": "up", "date": "2023-10-27"}
+   
 ]
