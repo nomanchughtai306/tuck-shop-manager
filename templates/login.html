@@ -1,115 +1,89 @@
 {% extends "base.html" %}
-{% block title %}Login - Loan Tracker{% endblock %}
+{% block title %}Login - Welcome Back{% endblock %}
 
 {% block content %}
-<style>
-    .auth-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 80vh; /* Increased height for better centering */
-        padding: 20px;
-    }
-
-    .auth-card {
-        background: var(--bg-card);
-        padding: 2.5rem;
-        border-radius: var(--radius);
-        width: 100%;
-        max-width: 400px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: var(--shadow-md);
-    }
-
-    .auth-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .auth-header h2 {
-        color: var(--text-main);
-        font-size: 1.8rem;
-    }
-
-    .auth-header p {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .form-group label {
-        color: var(--text-main);
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-    }
-
-    .auth-input {
-        width: 100%;
-        padding: 12px;
-        background: #000;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 8px;
-        color: white;
-        margin-bottom: 1.5rem;
-        transition: border-color 0.3s;
-    }
-
-    .auth-input:focus {
-        outline: none;
-        border-color: var(--accent);
-    }
-
-    .btn-login {
-        width: 100%;
-        padding: 12px;
-        font-size: 1rem;
-        font-weight: 600;
-    }
-
-    /* Added footer link styling to match register page */
-    .footer-link {
-        text-align: center;
-        margin-top: 1.5rem;
-        font-size: 0.9rem;
-        color: var(--text-muted);
-    }
-    
-    .footer-link a { 
-        color: var(--accent); 
-        font-weight: 600; 
-        text-decoration: none;
-    }
-    
-    .footer-link a:hover {
-        text-decoration: underline;
-    }
-</style>
-
 <div class="auth-wrapper">
     <div class="auth-card">
         <div class="auth-header">
-            <h2>Welcome Back 👋</h2>
-            <p>Please enter your details to login</p>
+            <div style="font-size: 3.5rem; margin-bottom: 1rem; animation: float 3s ease-in-out infinite;">⚡</div>
+            <h2>Welcome Back</h2>
+            <p>Sign in to manage your tuck shop</p>
         </div>
 
         <form method="POST" action="{{ url_for('login') }}">
             <div class="form-group">
-                <label>Username or Email</label>
-                <input type="text" name="login_identity" class="auth-input" placeholder="Enter username or email" required>
+                <label for="login-identity">Username or Email</label>
+                <input type="text" id="login-identity" name="login_identity" class="auth-input" 
+                    placeholder="Enter your username or email" required autofocus>
             </div>
             
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="auth-input" placeholder="••••••••" required>
+                <label for="password">Password</label>
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password" class="auth-input" 
+                        placeholder="••••••••" required style="padding-right: 45px;">
+                    <span id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem; user-select: none; opacity: 0.7;">
+                        👁️
+                    </span>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-login">Login to Dashboard</button>
+            <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin: 1rem 0; cursor: pointer;">
+                <input type="checkbox" id="remember" name="remember" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--gold);">
+                <label for="remember" style="margin-bottom: 0; cursor: pointer; font-size: 0.9rem; color: var(--text-muted);">Stay logged in</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-login" style="width: 100%; margin-top: 0.5rem;">
+                <span>🔐</span> Login to Dashboard
+            </button>
         </form>
 
-        <!-- New Register Link -->
-        <div class="footer-link">
-            Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+        <div class="footer-link" style="margin-top: 1.5rem; text-align: center;">
+            Don't have an account? <a href="{{ url_for('register') }}" style="color: var(--gold); font-weight: 600;">Create one</a>
+        </div>
+        
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(57, 255, 20, 0.1); text-align: center;">
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.75rem;">
+                Trusted by 1000+ Pakistani shop owners
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; font-size: 1.25rem;">
+                <span title="Secure">🔒</span>
+                <span title="Fast">⚡</span>
+                <span title="Reliable">✓</span>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Focus on username field
+        const identityInput = document.getElementById('login-identity');
+        if (identityInput) identityInput.focus();
+        
+        // --- Show/Hide Password Logic ---
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function() {
+            // Toggle type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle icon
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // --- Entry Animation ---
+        const authCard = document.querySelector('.auth-card');
+        authCard.style.opacity = '0';
+        authCard.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            authCard.style.transition = 'all 0.5s ease';
+            authCard.style.opacity = '1';
+            authCard.style.transform = 'translateY(0)';
+        }, 100);
+    });
+</script>
 {% endblock %}

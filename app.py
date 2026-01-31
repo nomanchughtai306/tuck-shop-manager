@@ -6,6 +6,8 @@ import json
 import os
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import request, redirect, url_for, flash
+from flask_login import login_user
 
 app = Flask(__name__)
 
@@ -114,6 +116,8 @@ def register():
         
         db.session.add(new_user)
         db.session.commit()
+        # request.form.get('remember') returns 'on' if checked, else None
+        remember_me = True if request.form.get('remember') else False
 
         flash('Registration successful! Please login.', 'success')
         return redirect(url_for('login'))
@@ -122,21 +126,35 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # If user is already logged in, send them to dashboard
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+
     if request.method == 'POST':
-        identity = request.form.get('login_identity')
+        # Get data from the form
+        identity = request.form.get('login_identity')  # Matches the 'name' in your HTML
         password = request.form.get('password')
         
-        user = User.query.filter((User.username == identity) | (User.email == identity)).first()
-        
-        if user and user.check_password(password):
-            login_user(user)
-            flash('Welcome back!', 'success')
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Invalid credentials.', 'error')
-            
-    return render_template('login.html')
+        # Check if "Remember Me" was checked (returns 'on' if checked, else None)
+        remember_me = True if request.form.get('remember') else False
 
+        # 1. Look for user by Username OR Email
+        user = User.query.filter((User.username == identity) | (User.email == identity)).first()
+
+        # 2. Verify password
+        if user and check_password_hash(user.password_hash, password):
+            # The 'remember' parameter creates a long-term cookie in the browser
+            login_user(user, remember=remember_me)
+            
+            flash("Welcome back to TuckShop Pro!", "success")
+            
+            # Redirect to the page they were trying to access, or dashboard
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('dashboard'))
+        else:
+            flash("Login failed. Please check your username/email and password.", "danger")
+
+    return render_template('login.html')
 @app.route('/logout')
 @login_required
 def logout():
@@ -147,29 +165,26 @@ def logout():
 @app.route('/add_rate', methods=['POST'])
 @login_required
 def add_rate():
-    # 1. Get data from form
+    # 1. Get data from form - ADDED 'category' HERE
     new_entry = {
         "name": request.form.get('name'),
-        "price": request.form.get('price'),
+        "price": float(request.form.get('price')), # Convert to float/int
         "unit": request.form.get('unit'),
+        "category": request.form.get('category'), # <--- THIS WAS MISSING
         "trend": request.form.get('trend'),
         "date": date.today().strftime('%Y-%m-%d')
     }
 
-    # 2. Path to your JSON file
-    # Use absolute path to avoid issues on PythonAnywhere
     json_path = os.path.join(app.root_path, 'static', 'rates.json')
 
     try:
-        # 3. Read existing data
         if os.path.exists(json_path):
             with open(json_path, 'r') as f:
                 rates_list = json.load(f)
         else:
             rates_list = []
 
-        # 4. Append and Save
-        rates_list.insert(0, new_entry) # Add to the top of the list
+        rates_list.insert(0, new_entry) 
         with open(json_path, 'w') as f:
             json.dump(rates_list, f, indent=4)
         
@@ -270,63 +285,96 @@ def products():
 @app.route('/add_product', methods=['POST'])
 @login_required
 def add_product():
+    # 1. Get data from the form
+    name = request.form.get('name')
+    p_price = request.form.get('purchase_price')
+    s_price = request.form.get('sale_price')
+    qty = request.form.get('quantity')
+
+    # 2. VALIDATION: Check if any field is empty
+    if not name or not p_price or not s_price or not qty:
+        flash("All fields are required.", "error")
+        return redirect(url_for('products'))
+
     try:
-        name = request.form['name']
-        quantity = int(request.form['quantity'])
-        p_price = float(request.form['purchase_price'])
-        s_price = float(request.form['sale_price'])
-        
-        # SAVE: Add user_id
+        # 3. INTEGER CONVERSION (Fixes the "float" issue)
+        # We assume the HTML regex worked, but we double-check here safely.
+        # We strip non-numeric characters just in case.
+        import re
+        clean_p_price = int(re.sub(r'[^0-9]', '', str(p_price)))
+        clean_s_price = int(re.sub(r'[^0-9]', '', str(s_price)))
+        clean_qty = int(re.sub(r'[^0-9]', '', str(qty)))
+
+        # 4. Create the new Product
+        # NOTE: Make sure 'quantity' matches your database column name (it might be 'stock' or 'initial_stock')
         new_product = Product(
-            name=name, 
-            quantity=quantity, 
-            purchase_price=p_price, 
-            sale_price=s_price,
+            name=name,
+            purchase_price=clean_p_price,
+            sale_price=clean_s_price,
+            quantity=clean_qty,  # This sets the initial stock
             user_id=current_user.id
         )
+
         db.session.add(new_product)
         db.session.commit()
         
-        # Helper for AJAX requests
-        if (request.headers.get('X-Requested-With') == 'XMLHttpRequest' or 
-            'application/json' in request.headers.get('Accept', '')):
-            return jsonify({'success': True})
+        flash("Product added successfully!", "success")
 
-        return redirect(request.referrer or url_for('products'))
-        
+    except ValueError:
+        flash("Invalid number format. Please enter whole numbers only.", "error")
     except Exception as e:
         db.session.rollback()
-        if (request.headers.get('X-Requested-With') == 'XMLHttpRequest'):
-            return jsonify({'success': False, 'error': str(e)}), 500
-        return redirect(request.referrer or url_for('products'))
+        print(f"Error adding product: {e}")
+        flash("An error occurred while adding the product.", "error")
+
+    # 5. Refresh the page
+    return redirect(url_for('products'))
 
 @app.route('/update_sales/<int:id>', methods=['POST'])
 @login_required
 def update_sales(id):
-    # SECURITY: Ensure product belongs to current user
+    # 1. SECURITY: Ensure the product belongs to the logged-in user
     product = Product.query.filter_by(id=id, user_id=current_user.id).first_or_404()
     
     try:
-        qty_sold_now = int(request.form['items_sold'])
+        # 2. SAFE CONVERSION: Handle "4" or "4.00" string formats
+        raw_val = request.form.get('items_sold', '0')
+        qty_sold_now = int(float(raw_val))
         
+        # 3. VALIDATION: Check for empty or negative input
+        if qty_sold_now <= 0:
+            return jsonify({'success': False, 'error': 'Please enter a valid quantity.'}), 400
+        
+        # 4. STOCK CHECK: Compare against the calculated property
         if qty_sold_now > product.remaining:
-            return jsonify({'success': False, 'error': 'Not enough stock!'}), 400
+            return jsonify({
+                'success': False, 
+                'error': f'Not enough stock! Only {int(product.remaining)} left.'
+            }), 400
         
+        
+        # updates itself automatically based on the sales in the DB.
         new_sale = Sale(product_id=product.id, quantity_sold=qty_sold_now)
         db.session.add(new_sale)
         db.session.commit()
 
+        # 6. RESPONSE: Handle AJAX (for your JS) or standard form redirect
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return jsonify({
                 'success': True,
-                'new_remaining': product.remaining,
+                'new_remaining': int(product.remaining), # Send back the new calculated stock
                 'product_id': id
             })
 
         return redirect(request.referrer or url_for('products'))
+
+    except ValueError:
+        return jsonify({'success': False, 'error': 'Invalid number format.'}), 400
     except Exception as e:
         db.session.rollback()
-        return jsonify({'success': False, 'error': str(e)}), 500
+        # Log the error for yourself and send a clean message to the user
+        print(f"Error in update_sales: {str(e)}")
+        return jsonify({'success': False, 'error': 'Server error. Please try again.'}), 500
 
 @app.route('/delete/<int:id>')
 @login_required
@@ -417,4 +465,4 @@ def rates():
     return render_template('rates.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=9000)

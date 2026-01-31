@@ -1,101 +1,136 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Dashboard - Analytics & Insights{% endblock %}
 
 {% block content %}
-<div class="dashboard-container">
-    <header class="main-header">
-        <div class="brand">
-            <a href="/">
-                <img src="{{ url_for('static', filename='images/cover.jpg') }}" alt="CalculatePro Logo" class="brand-img">
-            </a>
+<!-- Dashboard Header with Date Filter -->
+<header class="main-header" style="margin-bottom: 2rem;">
+    <div class="panel-header" style="margin-bottom: 0;">
+        <div>
+            <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.25rem;">
+                <span style="color: var(--accent);">📊</span> Dashboard
+            </h1>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Track your business performance & insights</p>
         </div>
-        <!-- <div class="logtext"><span>Calculate </span><span> Pro ⚡ </span></div> -->
-
+        
         <form action="/" method="GET" class="date-filter-form">
             <div class="filter-inputs">
                 <label for="d1" class="date-group">
                     <span class="label-text">From:</span>
                     <input id="d1" type="date" name="start_date" class="form-input d" value="{{ s_date }}" required>
                 </label>
-                <span class="filter-separator"></span>
+                <span class="filter-separator" style="color: var(--text-dim);">→</span>
                 <label for="d2" class="date-group">
                     <span class="label-text">To:</span>
                     <input id="d2" type="date" name="end_date" class="form-input d" value="{{ e_date }}" required>
                 </label>
             </div>
             <div class="filter-actions">
-                <button type="submit" class="btn btn-primary ">Analyze</button>
-                <a href="/" class="btn  btn-logout">Reset</a>
+                <button type="submit" class="btn btn-primary">Analyze</button>
+                <a href="/" class="btn btn-secondary">Reset</a>
             </div>
         </form>
-    </header>
+    </div>
+</header>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <ul class="flashes">
-        {% for category, message in messages %}
-        <li class="flash-item flash-{{ category }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
+<!-- Stats Cards Row -->
+<section class="stats-row">
+    {% if analytics and analytics != 'empty' %}
+    <!-- Total Revenue Card -->
+    <div class="stat-card border-primary">
+        <div class="stat-label">💰 Total Revenue</div>
+        <div class="stat-value count-up" data-target="{{ analytics.total_revenue }}">PKR 0</div>
+        <div class="stat-sub">From {{ analytics.total_sold }} units sold</div>
+    </div>
+
+    <!-- Net Profit Card -->
+    <div class="stat-card border-accent">
+        <div class="stat-label">📈 Net Profit</div>
+        <div class="stat-value count-up highlight-accent" data-target="{{ analytics.net_profit }}">PKR 0</div>
+        <div class="stat-sub">Overall Earnings</div>
+    </div>
+
+    <!-- Most Profitable Product Card -->
+    <div class="stat-card">
+        <div class="stat-label">🏆 Most Profitable</div>
+        <div class="stat-focus">{{ analytics.most_profitable.name }}</div>
+        <div class="stat-sub accent-text">Generated PKR {{ "%.2f"|format(analytics.most_profitable.total_profit_generated) }}</div>
+    </div>
+
+    <!-- Highest Margin Card -->
+    <div class="stat-card">
+        <div class="stat-label">⭐ Highest Margin</div>
+        <div class="stat-focus">{{ analytics.highest_margin.name }}</div>
+        <div class="stat-sub accent-text">+PKR {{ "%.2f"|format(analytics.highest_margin.profit_per_item) }} per unit</div>
+    </div>
+    {% else %}
+    <!-- Empty State Cards -->
+    <div class="stat-card">
+        <div class="stat-label">📊 Status</div>
+        <div class="stat-value" style="font-size: 1.5rem;">No Data</div>
+        <div class="stat-sub">Start adding products</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">💰 Revenue</div>
+        <div class="stat-value">PKR 0</div>
+        <div class="stat-sub">Sales will appear here</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">📈 Profit</div>
+        <div class="stat-value">PKR 0</div>
+        <div class="stat-sub">Track your earnings</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">📦 Inventory</div>
+        <div class="stat-value" style="font-size: 1.5rem;">Empty</div>
+        <div class="stat-sub">Add products to start</div>
+    </div>
     {% endif %}
-    {% endwith %}
+</section>
 
-    <section class="stats-row">
-        {% if analytics and analytics != 'empty' %}
-        <div class="stat-card border-primary">
-            <div class="stat-label">Total Revenue</div>
-            <div class="stat-value count-up" data-target="{{ analytics.total_revenue }}">PKR 0</div>
-            <div class="stat-sub">From {{ analytics.total_sold }} units sold</div>
-        </div>
-
-        <div class="stat-card border-accent">
-            <div class="stat-label">Net Profit</div>
-            <div class="stat-value count-up highlight-accent" data-target="{{ analytics.net_profit }}">PKR 0</div>
-            <div class="stat-sub">Overall Earnings</div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-label">💰 Most Profitable</div>
-            <div class="stat-focus">{{ analytics.most_profitable.name }}</div>
-            <div class="stat-sub accent-text">Generated PKR {{ "%.2f"|format(analytics.most_profitable.total_profit_generated) }}</div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-label">📈 Highest Margin</div>
-            <div class="stat-focus">{{ analytics.highest_margin.name }}</div>
-            <div class="stat-sub accent-text">+PKR {{ "%.2f"|format(analytics.highest_margin.profit_per_item) }} per unit</div>
+<!-- Product Performance Section -->
+<div class="panel">
+    <span class="panel-title">📦 Individual Product Performance Breakdown</span>
+    <div class="performance-grid">
+        {% for product in products %}
+        <div class="prod-card">
+            <div class="prod-card-header">
+                <strong>{{ product.name }}</strong>
+                <span class="badge badge-success">PKR {{ "%.2f"|format(product.total_profit_generated) }} Profit</span>
+            </div>
+            <div class="prod-card-details">
+                <span>🛒 {{ product.items_sold }} sold</span>
+                <span>💵 PKR {{ "%.2f"|format(product.items_sold * product.sale_price) }} revenue</span>
+            </div>
+            {% set percentage = (product.items_sold / product.quantity * 100) if product.quantity > 0 else 0 %}
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" data-width="{{ percentage }}"></div>
+            </div>
+            <small class="progress-label">{{ percentage|round|int }}% of stock sold</small>
         </div>
         {% else %}
-        <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">No Data</div></div>
-        <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">PKR 0</div></div>
-        <div class="stat-card"><div class="stat-label">Profit</div><div class="stat-value">PKR 0</div></div>
-        <div class="stat-card"><div class="stat-label">Inventory</div><div class="stat-value">Empty</div></div>
-        {% endif %}
-    </section>
-
-    <div class="content-grid">
-        <div class="panel grid-full">
-            <span class="panel-title">Individual Product Performance Breakdown</span>
-            <div class="performance-grid">
-                {% for product in products %}
-                <div class="prod-card">
-                    <div class="prod-card-header">
-                        <strong>{{ product.name }}</strong>
-                        <span class="badge badge-success">PKR {{ "%.2f"|format(product.total_profit_generated) }} Profit</span>
-                    </div>
-                    <div class="prod-card-details">
-                        <span>Sales: {{ product.items_sold }} units</span>
-                        <span>Revenue: PKR {{ "%.2f"|format(product.items_sold * product.sale_price) }}</span>
-                    </div>
-                    {% set percentage = (product.items_sold / product.quantity * 100) if product.quantity > 0 else 0 %}
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" data-width="{{ percentage }}"></div>
-                    </div>
-                    <small class="progress-label">{{ percentage|round|int }}% of stock sold</small>
-                </div>
-                {% endfor %}
-            </div>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
+            <h3 style="margin-bottom: 0.5rem;">No Products Yet</h3>
+            <p>Add your first product to see performance analytics</p>
+            <a href="{{ url_for('products') }}" class="btn btn-primary" style="margin-top: 1rem;">Add Product</a>
         </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Quick Actions Panel -->
+<div class="panel" style="background: linear-gradient(145deg, rgba(57, 255, 20, 0.05) 0%, rgba(15, 25, 15, 0.8) 100%);">
+    <span class="panel-title">⚡ Quick Actions</span>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{{ url_for('products') }}" class="btn btn-primary">
+            <span>➕</span> Add Product
+        </a>
+        <a href="{{ url_for('loans') }}" class="btn btn-gold">
+            <span>💸</span> New Loan
+        </a>
+        <a href="{{ url_for('rates') }}" class="btn btn-secondary">
+            <span>📊</span> Check Rates
+        </a>
     </div>
 </div>
 
@@ -127,7 +162,7 @@
         setTimeout(() => {
             bars.forEach(bar => {
                 const targetWidth = bar.getAttribute('data-width');
-                bar.style.width = targetWidth + '%';
+                bar.style.width = Math.min(targetWidth, 100) + '%';
             });
         }, 300);
 
@@ -144,12 +179,30 @@
 
         // Date Picker Helper
         document.querySelectorAll('.date-group').forEach(group => {
-            group.addEventListener('click', function () {
-                const input = this.querySelector('input[type="date"]');
-                if (input) {
-                    try { input.showPicker(); } catch (err) { input.focus(); }
+            group.addEventListener('click', function (e) {
+                if (e.target.tagName !== 'INPUT') {
+                    const input = this.querySelector('input[type="date"]');
+                    if (input) {
+                        try { input.showPicker(); } catch (err) { input.focus(); }
+                    }
                 }
             });
+        });
+
+        // Active Nav Item
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            if (item.getAttribute('href') === currentPath) {
+                item.classList.add('active');
+            }
+        });
+    });
+    /* This ensures that if the user clicks anywhere on the label or 
+       the input box itself, the browser's native date picker pops up.
+    */
+    document.querySelectorAll('input[type="date"]').forEach(input => {
+        input.addEventListener('click', function() {
+            this.showPicker();
         });
     });
 </script>

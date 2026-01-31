@@ -1,202 +1,300 @@
 {% extends "base.html" %}
-{% block title %}Daily Grocery Rates{% endblock %}
+{% block title %}Daily Grocery Rates - Market Prices{% endblock %}
 
 {% block content %}
-<div class="dashboard-container">
-    <div class="panel-header">
-        <h2>Market Rates Manager</h2>
-        <!-- Button to show/hide the form -->
-        <button class="btn btn-primary" onclick="toggleRateForm()">+ Add New Rate</button>
+<div class="panel-header" style="margin-bottom: 1.5rem;">
+    <div>
+        <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.25rem;">
+            <span style="color: var(--gold);">📊</span> Market Rates Manager
+        </h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Daily grocery prices from local markets</p>
     </div>
+    <button class="btn btn-primary" onclick="toggleRateForm()">
+        <span>➕</span> Add New Rate
+    </button>
+</div>
 
-    <!-- Hidden Input Form -->
-    <div id="addRateForm" class="panel" style="display: none; margin-bottom: 2rem; border: 1px solid var(--accent);">
-        <form action="{{ url_for('add_rate') }}" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
-            <div class="form-group">
-                <label>Item Name</label>
-                <input type="text" name="name" class="form-inputt" placeholder="e.g. Onion (Pyaz)" required>
-            </div>
-            <div class="form-group">
-                <label>Price (PKR)</label>
-                <input type="number" name="price" class="form-inputt" placeholder="120" required>
-            </div>
-            <div class="form-group">
-                <label>Unit</label>
-                <input type="text" name="unit" class="form-inputt" placeholder="kg / dozen" required>
-            </div>
-            <div class="form-group">
-                <label>Trend</label>
-                <select name="trend" class="form-inputt">
-                    <option value="stable">Stable</option>
-                    <option value="up">Price Up 🔼</option>
-                    <option value="down">Price Down 🔽</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1.5rem;">Save Rate</button>
-            </div>
-        </form>
+<div id="addRateForm" class="panel" style="display: none; margin-bottom: 2rem; border: 1px solid var(--accent); scroll-margin-top: 30px; background-color: #03423a;">
+    <span class="panel-title">➕ Add New Market Rate</span>
+    <form action="{{ url_for('add_rate') }}" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; align-items: end;">
+        <div class="form-group">
+            <label>Item Name</label>
+            <input type="text" name="name" class="form-input" placeholder="e.g., Onion (Pyaz)" required>
+        </div>
+        <div class="form-group">
+            <label>Price (PKR)</label>
+            <input type="number" step="1" name="price" class="form-input" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="120" required>
+        </div>
+        <div class="form-group">
+            <label>Unit</label>
+            <input type="text" name="unit" class="form-input" placeholder="kg / dozen" required>
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category" class="form-input">
+                <option value="vegetables">Vegetables</option>
+                <option value="fruits">Fruits</option>
+                <option value="grains">Grains</option>
+                <option value="dairy">Dairy</option>
+                <option value="oil">Oil & Ghee</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Trend</label>
+            <select name="trend" class="form-input">
+                <option value="stable">Stable ➖</option>
+                <option value="up">Price Up 🔼</option>
+                <option value="down">Price Down 🔽</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Save Rate</button>
+        </div>
+    </form>
+</div>
+
+<div class="category-grid">
+    <div class="category-card" onclick="handleCategoryClick('vegetables')">
+        <div class="category-icon">🥬</div>
+        <div class="category-name">Vegetables</div>
     </div>
+    <div class="category-card" onclick="handleCategoryClick('fruits')">
+        <div class="category-icon">🍎</div>
+        <div class="category-name">Fruits</div>
+    </div>
+    <div class="category-card" onclick="handleCategoryClick('grains')">
+        <div class="category-icon">🌾</div>
+        <div class="category-name">Grains</div>
+    </div>
+    <div class="category-card" onclick="handleCategoryClick('dairy')">
+        <div class="category-icon">🥛</div>
+        <div class="category-name">Dairy</div>
+    </div>
+    <div class="category-card" onclick="handleCategoryClick('oil')">
+        <div class="category-icon">🫒</div>
+        <div class="category-name">Oil & Ghee</div>
+    </div>
+    <div class="category-card active" onclick="handleCategoryClick('all')">
+        <div class="category-icon">📋</div>
+        <div class="category-name">View All</div>
+    </div>
+</div>
 
-    <div class="panel rates-panel">
+<div class="panel" id="rates-panel" style="scroll-margin-top: 30px;">
     <div class="panel-header">
         <div class="header-left">
-            <h3>🛒 Daily Grocery Rates (PKR)</h3>
+            <h3><span>🛒</span> Daily Grocery Rates (PKR)</h3>
             <p class="text-muted">Updated daily from local market</p>
         </div>
         <div class="search-box">
-            <input type="text" id="rateSearch" placeholder="Search items (e.g., Tomato)..." onkeyup="filterRates()">
+            <input type="text" id="rateSearch" placeholder="Search items..." onkeyup="filterRates()">
             <span class="search-icon">🔍</span>
         </div>
     </div>
 
     <div class="rates-container">
         <div id="loading" class="loading-spinner">
-            <div class="spinner"></div> Loading rates...
+            <div class="spinner"></div>
+            <p>Loading market rates...</p>
         </div>
 
-        <div class="table-responsive">
-            <table class="table rates-table" id="ratesTable" style="display: none;">
+        <div class="table-responsive-wrapper">
+            <table class="rates-table" id="ratesTable">
                 <thead>
                     <tr>
                         <th>Item Name</th>
                         <th>Price (PKR)</th>
                         <th>Unit</th>
+                        <th>Category</th>
                         <th>Trend</th>
                         <th>Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="ratesBody">
-                    </tbody>
+                </tbody>
             </table>
-        </div>
-        
-        <div id="noResults" style="display:none; text-align:center; padding: 20px; color: var(--text-muted);">
-            No items found.
         </div>
     </div>
 </div>
-</div>
 
+<div id="deleteModal" class="custom-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;">
+    <div class="modal-content" style="background: #1a1a1a; padding: 2.5rem; border-radius: 15px; text-align: center; border: 1px solid var(--danger); max-width: 400px; width: 90%;">
+        <div style="font-size: 3.5rem; margin-bottom: 1rem;">🗑️</div>
+        <h3 style="color: white; margin-bottom: 0.5rem;">Confirm Deletion</h3>
+        <p style="color: #ccc; margin-bottom: 1.5rem;">Are you sure you want to remove this item from the market list?</p>
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+    <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+    <button id="confirmDeleteBtn" class="btn btn-danger" onclick="executeDelete()" style="padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;">
+        Delete Now
+    </button>
+</div>
+    </div>
+</div>
+<!-- Call to Action -->
+<div style="text-align: center; margin-top: 3rem; padding: 2rem;">
+    <h2 style="margin-bottom: 1rem; font-size: 1.75rem;">Want to check today profit?</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        let's calculate with TuckShop Pro
+    </p>
+    {% if not current_user.is_authenticated %}
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('register') }}" class="btn btn-primary">
+            <span>🚀</span> Get Started Free
+        </a>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">
+            <span>🔐</span> Sign In
+        </a>
+    </div>
+    {% else %}
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+        <span>📊</span> Go to Dashboard
+    </a>
+    {% endif %}
 <script>
-    function toggleRateForm() {
-        const form = document.getElementById('addRateForm');
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    let allRates = []; 
+    let currentCategory = 'all';
+
+    // --- SCROLL HELPER ---
+    function scrollToElement(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
-    // 1. Fetch Data on Load
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchRates();
-    });
+    // --- FORM LOGIC ---
+    function toggleRateForm() {
+        const form = document.getElementById('addRateForm');
+        if (form.style.display === 'none' || form.style.display === '') {
+            form.style.display = 'block';
+            // Use timeout to ensure element is rendered before scrolling
+            setTimeout(() => scrollToElement('addRateForm'), 50);
+        } else {
+            form.style.display = 'none';
+        }
+    }
 
-    let allRates = []; // Store data globally for filtering
+    // --- DATA FETCHING ---
+    document.addEventListener('DOMContentLoaded', fetchRates);
 
     async function fetchRates() {
         const loading = document.getElementById('loading');
-        const table = document.getElementById('ratesTable');
-        
         try {
-            const response = await fetch("{{ url_for('static', filename='rates.json') }}");
-            
-            if (!response.ok) throw new Error("Failed to load rates");
-            
+            const response = await fetch("{{ url_for('static', filename='rates.json') }}?" + new Date().getTime());
             allRates = await response.json();
             renderRates(allRates);
-            
             loading.style.display = 'none';
-            table.style.display = 'table';
-            
         } catch (error) {
-            console.error(error);
-            loading.innerHTML = `<span style="color:var(--danger)">⚠️ Unable to load rates. Please try again later.</span>`;
+            loading.innerHTML = `<p style="color:red">Error loading rates data.</p>`;
         }
     }
 
-    // 2. Render Table Function
     function renderRates(data) {
         const tbody = document.getElementById('ratesBody');
-        const noResults = document.getElementById('noResults');
         tbody.innerHTML = '';
 
-        if (data.length === 0) {
-            noResults.style.display = 'block';
-            document.getElementById('ratesTable').style.display = 'none';
-            return;
-        } else {
-            noResults.style.display = 'none';
-            document.getElementById('ratesTable').style.display = 'table';
-        }
+        const categoryIcons = {
+            'vegetables': '🥬', 'fruits': '🍎', 'grains': '🌾',
+            'dairy': '🥛', 'oil': '🫒', 'other': '📦'
+        };
 
-        // We use the index for the delete route
         data.forEach((item, index) => {
-            let trendIcon = '➖';
-            let trendClass = 'trend-stable';
+            const catKey = (item.category || 'other').toLowerCase();
+            const icon = categoryIcons[catKey] || '📦';
+            const catDisplay = catKey.charAt(0).toUpperCase() + catKey.slice(1);
             
-            if (item.trend === 'up') { trendIcon = '🔼'; trendClass = 'trend-up'; }
-            if (item.trend === 'down') { trendIcon = '🔽'; trendClass = 'trend-down'; }
+            let trendIcon = item.trend === 'up' ? '🔼' : (item.trend === 'down' ? '🔽' : '➖');
 
-            const row = `
+            tbody.innerHTML += `
                 <tr>
-                    <td data-label="Item"><strong>${item.name}</strong></td>
-                    <td data-label="Price" style="font-size:1.1rem;">Rs. ${item.price}</td>
-                    <td data-label="Unit">${item.unit}</td>
-                    <td data-label="Trend"><span class="${trendClass}">${trendIcon} ${item.trend.toUpperCase()}</span></td>
-                    <td data-label="Date" style="color:var(--text-muted); font-size:0.85rem;">${item.date}</td>
-                    <td data-label="Action">
-    <button class="btn-delete-link" onclick="openDeleteModal(${index})">
-       🗑️ Delete
-    </button>
-</td>
+                    <td><strong>${item.name}</strong></td>
+                    <td style="color: var(--gold); font-weight:700;">Rs. ${Math.floor(item.price)}</td>
+                    <td>${item.unit}</td>
+                    <td><span class="badge badge-success" style="background: rgba(57, 255, 20, 0.1); color: #39ff14; border: 1px solid #39ff14;">${icon} ${catDisplay}</span></td>
+                    <td>${trendIcon} ${item.trend.toUpperCase()}</td>
+                    <td style="font-size: 0.85rem; color: #888;">${item.date}</td>
+                    <td>
+                        <button onclick="openDeleteModal(${index})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-weight:bold; display:flex; align-items:center; gap:5px;">
+                            <span>🗑️</span> Delete
+                        </button>
+                    </td>
                 </tr>
             `;
-            tbody.innerHTML += row;
         });
     }
 
-    // 3. Search Filter Function
+    // --- DELETE MODAL FIX ---
+    function openDeleteModal(index) {
+        const modal = document.getElementById('deleteModal');
+        const confirmLink = document.getElementById('confirmDeleteLink');
+        confirmLink.href = `/delete_rate/${index}`;
+        modal.style.display = 'flex';
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    // --- FILTER & SCROLL LOGIC ---
+    function handleCategoryClick(category) {
+        filterByCategory(category);
+        scrollToElement('rates-panel');
+    }
+
+    function filterByCategory(category) {
+        currentCategory = category.toLowerCase();
+        
+        // Update active class on cards
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.classList.remove('active');
+            const cardText = card.innerText.toLowerCase();
+            if (cardText.includes(currentCategory) || (currentCategory === 'all' && cardText.includes('view all'))) {
+                card.classList.add('active');
+            }
+        });
+        
+        filterRates();
+    }
+
     function filterRates() {
         const query = document.getElementById('rateSearch').value.toLowerCase();
-        
-        const filtered = allRates.filter(item => 
-            item.name.toLowerCase().includes(query)
-        );
-        
+        const filtered = allRates.filter(item => {
+            const matchesSearch = item.name.toLowerCase().includes(query);
+            const itemCat = (item.category || 'other').toLowerCase();
+            const matchesCat = currentCategory === 'all' || itemCat === currentCategory;
+            return matchesSearch && matchesCat;
+        });
         renderRates(filtered);
     }
-    let deleteIndex = null;
+
+    // Close modal if user clicks outside of it
+    window.onclick = function(event) {
+        const modal = document.getElementById('deleteModal');
+        if (event.target == modal) {
+            closeDeleteModal();
+        }
+    }
+    let deleteIndex = null; // To store which item we want to delete
 
 function openDeleteModal(index) {
-    deleteIndex = index;
+    deleteIndex = index; // Store the index globally in this script
     const modal = document.getElementById('deleteModal');
-    const confirmBtn = document.getElementById('confirmDeleteBtn');
-    
-    // Set the link for the "Yes, Delete" button
-    confirmBtn.href = `/delete_rate/${index}`;
-    
     modal.style.display = 'flex';
 }
 
 function closeDeleteModal() {
-    document.getElementById('deleteModal').style.display = 'none';
+    const modal = document.getElementById('deleteModal');
+    modal.style.display = 'none';
+    deleteIndex = null;
 }
 
-// Close modal if user clicks outside the box
-window.onclick = function(event) {
-    const modal = document.getElementById('deleteModal');
-    if (event.target == modal) {
-        closeDeleteModal();
+function executeDelete() {
+    if (deleteIndex !== null) {
+        // This forces the browser to go to your Python delete route
+        window.location.href = `/delete_rate/${deleteIndex}`;
     }
 }
 </script>
-<div id="deleteModal" class="custom-modal" style="display: none;">
-    <div class="modal-content">
-        <h3>Confirm Deletion</h3>
-        <p>Are you sure you want to delete this rate? This action cannot be undone.</p>
-        <div class="modal-actions">
-            <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-            <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Yes, Delete</a>
-        </div>
-    </div>
-</div>
 {% endblock %}
