@@ -17,9 +17,11 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# Get the directory where app.py is located
+basedir = os.path.abspath(os.path.dirname(__file__))
 # --- CONFIGURATION ---
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'instance', 'shop.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # --- ADMIN CONFIGURATION ---
 ADMIN_USERNAME = os.environ.get('ADMIN_USER')
