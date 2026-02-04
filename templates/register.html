@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Register - Create Account{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div style="font-size: 3.5rem; margin-bottom: 1rem; animation: float 3s ease-in-out infinite;">📝</div>
+            <h2>Create Account</h2>
+            <p>Join TuckShop Pro to manage your business</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="auth-input" placeholder="Choose a username" required autofocus>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="auth-input" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password" class="auth-input" placeholder="Create a strong password" required style="padding-right: 45px;">
+                    <span id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem; user-select: none;">
+                        👁️
+                    </span>
+                </div>
+                <small id="strengthText" style="color: var(--text-dim); font-size: 0.8rem;">
+                    Use at least 8 characters with numbers and symbols
+                </small>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 1rem; cursor: pointer;">
+                <input type="checkbox" id="remember" name="remember" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--success);">
+                <label for="remember" style="margin-bottom: 0; cursor: pointer; font-size: 0.9rem; color: var(--text-muted);">Remember me on this device</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">
+                <span>🚀</span> Create Account
+            </button>
+        </form>
+
+        <div class="footer-link">
+            Already have an account? <a href="{{ url_for('login') }}">Sign in</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. Show/Hide Password Toggle ---
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            // Toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // Toggle the emoji
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // --- 2. Existing Card Animation ---
+        const authCard = document.querySelector('.auth-card');
+        authCard.style.opacity = '0';
+        authCard.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            authCard.style.transition = 'all 0.5s ease';
+            authCard.style.opacity = '1';
+            authCard.style.transform = 'translateY(0)';
+        }, 100);
+        
+        // --- 3. Improved Strength Indicator ---
+        password.addEventListener('input', function() {
+            const val = this.value;
+            const strengthText = document.getElementById('strengthText');
+            if (val.length >= 8) {
+                this.style.borderColor = '#39ff14'; // Success Neon
+                strengthText.style.color = '#39ff14';
+                strengthText.textContent = "Strong password! ✅";
+            } else if (val.length >= 4) {
+                this.style.borderColor = '#ffcc00'; // Warning
+                strengthText.style.color = '#ffcc00';
+                strengthText.textContent = "Getting there... ⚠️";
+            } else {
+                this.style.borderColor = 'rgba(57, 255, 20, 0.2)';
+                strengthText.style.color = 'var(--text-dim)';
+                strengthText.textContent = "Use at least 8 characters";
+            }
+        });
+    });
+</script>
+{% endblock %}

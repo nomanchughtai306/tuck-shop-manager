@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="TuckShop Pro - Pakistan's Smart Grocery Management Platform">
+    <meta name="theme-color" content="#0a0f0a">
+    <title>TuckShop Pro | {% block title %}{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+   
+      
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <nav class="navbar" style="position: relative; z-index: 1001;"> 
+        <div class="nav-container">
+            <div class="logogo" style="display: flex; align-items: center; gap: 10px;">
+                <a href="/" class="nav-logo">
+                    <span>⚡</span> TuckShop<b>Pro</b>
+                </a>
+                <a href="/">
+                    <img  src="{{ url_for('static', filename='images/logo.png') }}" alt="Developer"
+                        class="brand-logo">
+                </a>
+            </div>
+
+            <ul class="nav-links" id="navLinks">
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('dashboard') }}" class="nav-item">Dashboard</a></li>
+                <li><a href="{{ url_for('products') }}" class="nav-item">Products</a></li>
+                <li><a href="{{ url_for('loans') }}" class="nav-item">Loan Track</a></li>
+                <li><a href="{{ url_for('rates') }}" class="nav-item">Grocery Rates</a></li>
+                <li><a href="/logout" class="nav-item" style="color: var(--danger);">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}" class="nav-item">Login</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('about') }}" class="nav-item">About</a></li>
+            </ul>
+
+            <div class="nav-right">
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+                    <span class="menu-icon">☰</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flashes" style="list-style: none; padding: 0;">
+            {% for category, message in messages %}
+            <li class="flash-item flash-{{ category }}" style="padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+
+    <script>
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const menuIcon = document.querySelector('.menu-icon');
+            navLinks.classList.toggle('active');
+            menuIcon.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        }
+
+        document.addEventListener('click', function(event) {
+            const navLinks = document.getElementById('navLinks');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            if (navLinks.classList.contains('active')) {
+                if (!navLinks.contains(event.target) && !menuBtn.contains(event.target)) {
+                    navLinks.classList.remove('active');
+                    document.querySelector('.menu-icon').textContent = '☰';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

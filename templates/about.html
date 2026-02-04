@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}About - TuckShop Pro{% endblock %}
+
+{% block content %}
+<!-- About Header -->
+<div class="about-header">
+    <div style="font-size: 4rem; margin-bottom: 1rem; animation: float 3s ease-in-out infinite;">🛒</div>
+    <h1>Simplify Your Shop Management</h1>
+    <p>
+        TuckShop Pro is a purpose-built solution designed to replace messy paper notebooks. 
+        We help small business owners across Pakistan manage inventory, track customer credits, 
+        and generate insights — all from a simple, secure dashboard.
+    </p>
+</div>
+
+<!-- Features Grid -->
+<div class="features-grid">
+    <div class="feature-card">
+        <div class="icon-wrapper">💸</div>
+        <h3>Smart Loan Tracking</h3>
+        <p>Never lose track of who owes you money. Mark items as "Pending" and clear them with a single click when paid.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="icon-wrapper">📱</div>
+        <h3>WhatsApp Reminders</h3>
+        <p>Send professional payment reminders directly to your customer's WhatsApp with an auto-generated receipt link.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="icon-wrapper">📊</div>
+        <h3>Real-Time Analytics</h3>
+        <p>Know your best-selling products and calculate your daily profit margins instantly without doing the math yourself.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="icon-wrapper">🔒</div>
+        <h3>Secure & Private</h3>
+        <p>Your data is protected with secure login authentication. Manage your business data with peace of mind.</p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="icon-wrapper">🥬</div>
+        <h3>Daily Market Rates</h3>
+        <p>Stay updated with current grocery prices. Know the market trends for vegetables, fruits, grains, and more.</p>
+    </div>
+    
+    <div class="feature-card">
+        <div class="icon-wrapper">⚡</div>
+        <h3>Fast & Reliable</h3>
+        <p>Built for speed with a modern tech stack. Works perfectly even on slower internet connections.</p>
+    </div>
+</div>
+
+<!-- Developer Section -->
+<div class="dev-section">
+    <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Built with Modern Technology</h3>
+    <div style="margin-bottom: 1.5rem;">
+        <span class="tech-badge">Python Flask</span>
+        <span class="tech-badge">SQLAlchemy</span>
+        <span class="tech-badge">Jinja2</span>
+        <span class="tech-badge">JavaScript</span>
+        <span class="tech-badge">CSS3</span>
+    </div>
+    
+    <!-- Stats -->
+    <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin: 2rem 0;">
+        <div style="text-align: center;">
+            <div style="font-size: 2rem; font-weight: 700; color: var(--accent);">1000+</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Active Users</div>
+        </div>
+        <div style="text-align: center;">
+            <div style="font-size: 2rem; font-weight: 700; color: var(--gold);">50K+</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Loans Tracked</div>
+        </div>
+        <div style="text-align: center;">
+            <div style="font-size: 2rem; font-weight: 700; color: var(--success);">99.9%</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Uptime</div>
+        </div>
+    </div>
+    
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        Built by <strong>Noman Chughtai</strong>
+    </p>
+     <div><a href="https://www.linkedin.com/in/noman-chughtai-857883293/">
+                    <img  src="{{ url_for('static', filename='images/dp.png') }}" alt="Developer"
+                        class="brand-logo">
+                </a></div>
+    <a href="https://www.linkedin.com/in/noman-chughtai-857883293/" class="btn btn-primarys" style="margin-top: 0.5rem; background:linear-gradient(135deg, #9698a854 60%, #0224961f 40%); color:rgb(255, 255, 255);">
+        <span>💻</span> Contact Developer
+    </a>
+    
+</div>
+
+
+<!-- Call to Action -->
+<div style="text-align: center; margin-top: 3rem; padding: 2rem;">
+    <h2 style="margin-bottom: 1rem; font-size: 1.75rem;">Ready to streamline your business?</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        Join thousands of shop owners who trust TuckShop Pro
+    </p>
+    {% if not current_user.is_authenticated %}
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('register') }}" class="btn btn-primary">
+            <span>🚀</span> Get Started Free
+        </a>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">
+            <span>🔐</span> Sign In
+        </a>
+    </div>
+    {% else %}
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+        <span>📊</span> Go to Dashboard
+    </a>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Active Nav Item
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            if (item.getAttribute('href') === currentPath) {
+                item.classList.add('active');
+            }
+        });
+        
+        // Animate feature cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+    });
+</script>
+{% endblock %}

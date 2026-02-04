@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Admin Dashboard Layout */
+    .admin-container {
+        max-width: 1300px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--glass-border);
+        padding-bottom: 1rem;
+    }
+
+    /* Table Glassmorphism Style */
+    .admin-table-container {
+        background: var(--bg-glass);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .admin-table th {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 1.2rem;
+        text-align: left;
+        color: var(--accent);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .admin-table td {
+        padding: 1.2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+        vertical-align: middle;
+    }
+
+    /* Status Badges */
+    .badge {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-full);
+        font-size: 0.7rem;
+        font-weight: 800;
+        display: inline-block;
+    }
+    .badge-active { background: rgba(74, 222, 128, 0.1); color: var(--success); border: 1px solid var(--success); }
+    .badge-deactivated { background: rgba(248, 113, 113, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+
+    /* LABELED ACTION BUTTONS */
+    .action-group {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        color: white !important;
+        text-transform: uppercase;
+    }
+
+    .btn-view { background: #3b82f6; } /* Blue for View */
+    .btn-view:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+
+    .btn-toggle { background: #8b5cf6; } /* Purple for Toggle */
+    .btn-toggle:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); }
+
+    .btn-delete { background: var(--danger); } /* Red for Delete */
+    .btn-delete:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(248, 113, 113, 0.4); }
+
+    .btn-action i { font-size: 0.9rem; }
+
+    /* Deactivated User Row Style */
+    .row-deactivated {
+        background: rgba(0, 0, 0, 0.3);
+    }
+    .row-deactivated td {
+        opacity: 0.7;
+    }
+</style>
+
+<div class="admin-container">
+    <div class="section-header">
+        <div>
+            <h1 class="section-title" style="margin:0;">User Management</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Control access and monitor shop performance</p>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn-primary" style="padding: 0.8rem 1.5rem; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-chart-pie"></i> Stats Overview
+        </a>
+    </div>
+
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Shop Detail</th>
+                    <th>Email Address</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Management Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr class="{{ 'row-deactivated' if not user.is_active else '' }}">
+                    <td><span style="color: var(--accent); font-weight: bold;">#{{ user.id }}</span></td>
+                    <td>
+                        <div style="font-weight: 700; font-size: 1.1rem;">{{ user.username }}</div>
+                        <small style="color: var(--text-dim);">Shop ID: {{ user.username|lower }}_pro</small>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <span class="badge {{ 'badge-active' if user.is_active else 'badge-deactivated' }}">
+                            {{ 'LIVE' if user.is_active else 'DEACTIVATED' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-group">
+                            <a href="{{ url_for('admin_user_detail', user_id=user.id) }}" class="btn-action btn-view">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                            
+                            <a href="{{ url_for('toggle_user', user_id=user.id) }}" class="btn-action btn-toggle">
+                                <i class="fas {{ 'fa-user-slash' if user.is_active else 'fa-user-check' }}"></i>
+                                {{ 'Block' if user.is_active else 'Unblock' }}
+                            </a>
+
+                            <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST" style="margin:0;">
+                                <button type="submit" class="btn-action btn-delete" onclick="return confirm('WARNING: Permanently delete this user and all their data?')">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

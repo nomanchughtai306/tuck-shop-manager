@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="auth-container" style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+    <div class="glass-card" style="width: 100%; max-width: 400px; padding: 2.5rem; text-align: center;">
+        
+        <div class="auth-header" style="margin-bottom: 2rem;">
+            <div style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h2 class="section-title" style="margin-bottom: 0.5rem;">Admin Access</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Authorized Personnel Only</p>
+        </div>
+
+        <form method="POST" class="auth-form">
+            <div class="form-group" style="margin-bottom: 1.5rem; text-align: left;">
+                <label style="display: block; color: var(--text-muted); margin-bottom: 0.5rem; font-size: 0.8rem; text-transform: uppercase;">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter admin username" required 
+                       style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-md); color: white;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 2rem; text-align: left;">
+                <label style="display: block; color: var(--text-muted); margin-bottom: 0.5rem; font-size: 0.8rem; text-transform: uppercase;">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required
+                       style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-md); color: white;">
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer;">
+                VERIFY & ENTER
+            </button>
+        </form>
+
+        <div style="margin-top: 1.5rem;">
+            <a href="{{ url_for('login') }}" style="color: var(--text-dim); text-decoration: none; font-size: 0.8rem;">
+                <i class="fas fa-arrow-left"></i> Back to Shop Login
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

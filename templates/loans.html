@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% block title %}Loan Tracker - Customer Credits{% endblock %}
+
+{% block extra_css %}
+<!-- SweetAlert2 for beautiful confirmations -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+{% endblock %}
+
+{% block content %}
+<!-- SweetAlert2 Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Page Header -->
+<div class="panel-header" style="margin-bottom: 1.5rem;">
+    <div>
+        <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.25rem;">
+            <span style="color: var(--gold);">💸</span> Loan Tracker
+        </h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Manage customer credits and payments</p>
+    </div>
+</div>
+
+<!-- Summary Card - Total Pending -->
+<div class="summary-card">
+    <div class="summary-label">Total Pending Collection</div>
+    <h1 class="summary-value">PKR {{ "%.2f"|format(unpaid|sum(attribute='amount')) }}</h1>
+    <p style="color: var(--text-muted); margin-top: 0.5rem;">{{ unpaid|length }} pending loans</p>
+</div>
+
+<!-- New Loan Entry Panel -->
+<div class="panel" style="margin-bottom: 2rem; border-color: rgba(255, 215, 0, 0.2);">
+    <span class="panel-title" style="display: flex; align-items: center; gap: 0.5rem;">
+        <span>➕</span> New Loan Entry
+    </span>
+    <form action="/add_loan" method="POST" id="loanForm">
+        <div class="loan-form-grid">
+            <div class="form-group">
+                <label for="customer-name">Customer Name</label>
+                <input type="text" id="customer-name" name="customer_name" class="form-input" placeholder="e.g., Ahmad Khan" required>
+            </div>
+            <div class="form-group">
+                <label for="phone-number">Phone Number</label>
+                <input type="text" id="phone-number" name="phone_number" class="form-input" placeholder="03xx-xxxxxxx" required>
+            </div>
+            <div class="form-group">
+                <label for="loan-amount">Total Amount (PKR)</label>
+                <input type="number" id="loan-amount" step="0.01" name="amount" class="form-input" placeholder="0.00" required>
+            </div>
+        </div>
+        <div class="form-group full-width-group">
+            <label for="products-taken">Products Taken</label>
+            <textarea id="products-taken" name="product_taken" class="form-input" rows="2" placeholder="List items here (e.g., 2kg Rice, 1L Oil, 500g Sugar...)" required></textarea>
+        </div>
+        <div style="margin-top: 1rem;">
+            <button type="submit" class="btn btn-gold">
+                <span>💾</span> Save Loan
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Pending Collection Panel -->
+<div class="panel" style="border-color: rgba(245, 158, 11, 0.2);">
+    <span class="panel-title" style="display: flex; align-items: center; gap: 0.5rem; color: var(--warning);">
+        <span>⚠️</span> Pending Collection
+        <span class="badge badge-warning" style="margin-left: auto;">{{ unpaid|length }} Pending</span>
+    </span>
+    <div class="table-responsive-wrapper">
+        <table class="loan-table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Phone Number</th>
+                    <th>Products</th>
+                    <th>Amount</th>
+                    <th>Date/Time</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in unpaid %}
+                <tr>
+                    <td data-label="Customer">
+                        <strong style="font-size: 1.05rem;">{{ loan.customer_name }}</strong>
+                    </td>
+                    <td data-label="Phone">{{ loan.phone_number }}</td>
+                    <td data-label="Products" style="max-width: 200px;">
+                        <small style="color: var(--text-muted);">{{ loan.product_taken }}</small>
+                    </td>
+                    <td data-label="Amount" class="status-pending" style="font-size: 1.1rem; font-weight: 600;">
+                        PKR {{ "%.2f"|format(loan.amount) }}
+                    </td>
+                    <td data-label="Date" style="color: var(--text-muted); font-size: 0.85rem;">
+                        {{ loan.date_added.strftime('%d %b, %I:%M %p') }}
+                    </td>
+                    <td data-label="Action">
+                        <div class="action-flex">
+                            <button class="btn-receive" onclick="confirmPayment('{{ url_for('mark_paid', id=loan.id) }}', '{{ loan.customer_name }}')">
+                                <span>✓</span> RECEIVE
+                            </button>
+                            <a href="{{ url_for('send_whatsapp', id=loan.id) }}" target="_blank" class="btn-notify">
+                                <span>📱</span> NOTIFY
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--success);">All Caught Up!</h3>
+                        <p>No pending loans. Great job!</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Recently Paid History Panel -->
+{% if history %}
+<div class="panel" style="margin-top: 1.5rem; border-color: rgba(34, 197, 94, 0.2);">
+    <span class="panel-title" style="display: flex; align-items: center; gap: 0.5rem; color: var(--success);">
+        <span>✅</span> Recently Paid History
+        <span class="badge badge-success" style="margin-left: auto;">{{ history|length }} Paid</span>
+    </span>
+    <div class="table-responsive-wrapper">
+        <table class="loan-table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Products</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in history %}
+                <tr>
+                    <td data-label="Customer">
+                        <strong>{{ item.customer_name }}</strong>
+                    </td>
+                    <td data-label="Products">
+                        <small style="color: var(--text-muted);">{{ item.product_taken }}</small>
+                    </td>
+                    <td data-label="Amount" style="font-weight: 600;">
+                        PKR {{ "%.2f"|format(item.amount) }}
+                    </td>
+                    <td data-label="Status">
+                        <span class="badge badge-success">✓ PAID</span>
+                    </td>
+                    <td data-label="Action">
+                        <button class="delete-x" onclick="confirmDelete('{{ url_for('delete_loan', id=item.id) }}')" title="Delete Record">
+                            &times;
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+<!-- Call to Action -->
+<div style="text-align: center; margin-top: 3rem; padding: 2rem;">
+    <h2 style="margin-bottom: 1rem; font-size: 1.75rem;">Want to check today profit?</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        let's calculate with TuckShop Pro
+    </p>
+    {% if not current_user.is_authenticated %}
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('register') }}" class="btn btn-primary">
+            <span>🚀</span> Get Started Free
+        </a>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">
+            <span>🔐</span> Sign In
+        </a>
+    </div>
+    {% else %}
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+        <span>📊</span> Go to Dashboard
+    </a>
+    {% endif %}
+<script>
+    // Beautiful Confirmation for Receiving Payment
+    function confirmPayment(url, name) {
+        Swal.fire({
+            title: 'Confirm Payment?',
+            text: `Are you sure ${name} has paid the full amount?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#22c55e',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, Received!',
+            cancelButtonText: 'Not yet',
+            background: 'rgba(15, 25, 15, 0.98)',
+            color: '#ffffff',
+            backdrop: 'rgba(0, 0, 0, 0.8)',
+            customClass: {
+                popup: 'swal-dark'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    }
+
+    // Beautiful Confirmation for Deleting History
+    function confirmDelete(url) {
+        Swal.fire({
+            title: 'Delete Permanently?',
+            text: "This record will be removed from your history forever!",
+            icon: 'warning',
+            background: 'rgba(15, 25, 15, 0.98)',
+            color: '#ffffff',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Delete Now',
+            cancelButtonText: 'Keep it',
+            backdrop: 'rgba(0, 0, 0, 0.8)'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    }
+
+    // Success Toast for Flask Flash messages
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: '{{ "success" if category == "success" else "error" }}',
+            title: '{{ message }}',
+            showConfirmButton: false,
+            timer: 3000,
+            background: 'rgba(15, 25, 15, 0.98)',
+            color: '#ffffff'
+          });
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    // Active Nav Item
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            if (item.getAttribute('href') === currentPath) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+
+<style>
+    /* SweetAlert Dark Theme Customization */
+    .swal2-popup.swal-dark {
+        background: rgba(15, 25, 15, 0.98) !important;
+        border: 1px solid rgba(57, 255, 20, 0.2) !important;
+        border-radius: 16px !important;
+    }
+    .swal2-title {
+        color: #ffffff !important;
+    }
+    .swal2-html-container {
+        color: #9ca3af !important;
+    }
+    .swal2-confirm {
+        border-radius: 50px !important;
+        font-weight: 600 !important;
+    }
+    .swal2-cancel {
+        border-radius: 50px !important;
+        font-weight: 600 !important;
+    }
+</style>
+{% endblock %}

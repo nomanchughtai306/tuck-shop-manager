@@ -1,0 +1,182 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<div class="admin-container">
+    <div class="dashboard-header">
+        <div class="header-text">
+            <h1 class="section-title">System Overview <span style="color: var(--accent);">[Admin]</span></h1>
+            <p class="section-subtitle">Real-time global performance metrics</p>
+        </div>
+        <div class="admin-actions">
+            <a href="{{ url_for('admin_users') }}" class="btn-primary admin-btn">
+                <i class="fas fa-users"></i> Manage Users
+            </a>
+            <a href="{{ url_for('admin_logout') }}" class="btn-danger admin-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-store"></i></div>
+            <span class="stat-label">Total Shop Owners</span>
+            <span class="stat-value">{{ stats.users_count }}</span>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-boxes"></i></div>
+            <span class="stat-label">Global Products</span>
+            <span class="stat-value">{{ stats.products_count }}</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+            <span class="stat-label">Total Sales Made</span>
+            <span class="stat-value">{{ stats.total_sales_count }}</span>
+        </div>
+
+        <div class="stat-card highlight-card">
+            <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+            <span class="stat-label">Global Net Profit</span>
+            <span class="stat-value">PKR {{ "{:,.0f}".format(stats.total_profit) }}</span>
+        </div>
+    </div>
+
+    <div class="glass-card status-footer">
+        <i class="fas fa-shield-alt" style="color: var(--accent); margin-bottom: 1rem; font-size: 1.5rem;"></i>
+        <p>
+            Welcome to the <strong>Master Control Panel</strong>. You are currently viewing aggregated data from all registered tuck shops.
+        </p>
+    </div>
+</div>
+
+<style>
+    /* Admin Layout & Header */
+    .admin-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .dashboard-header {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .section-subtitle {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: 0.2rem;
+    }
+
+    .admin-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .admin-btn {
+        text-decoration: none; 
+        padding: 0.8rem 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        border-radius: var(--radius-md);
+    }
+
+    /* Stats Grid & Cards */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+        background: var(--bg-glass);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        padding: 2rem 1.5rem;
+        border-radius: var(--radius-lg);
+        text-align: center;
+        transition: var(--transition-base);
+        box-shadow: var(--shadow-md);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent);
+        box-shadow: 0 12px 40px 0 rgba(245, 184, 0, 0.15);
+    }
+
+    .stat-icon {
+        font-size: 1.2rem;
+        color: var(--text-dim);
+        margin-bottom: 1rem;
+        opacity: 0.7;
+    }
+
+    .stat-value {
+        display: block;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--text-main);
+        margin-top: 0.5rem;
+    }
+
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+    }
+
+    /* Profit Card Highlight */
+    .highlight-card {
+        border: 1px solid var(--accent);
+        background: linear-gradient(145deg, var(--bg-glass), rgba(245, 184, 0, 0.05));
+    }
+
+    .highlight-card .stat-value {
+        color: var(--accent);
+        text-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .highlight-card .stat-icon {
+        color: var(--accent);
+        opacity: 1;
+    }
+
+    /* Footer Info */
+    .status-footer {
+        padding: 2.5rem;
+        text-align: center;
+        border-radius: var(--radius-lg);
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    /* Responsive Fixes */
+    @media (max-width: 768px) {
+        .dashboard-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        .admin-actions {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}

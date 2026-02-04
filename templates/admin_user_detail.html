@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <div style="margin-bottom: 2rem;">
+        <a href="{{ url_for('admin_users') }}" style="color: var(--accent); text-decoration: none; font-size: 0.9rem;">
+            <i class="fas fa-arrow-left"></i> Back to User List
+        </a>
+        <h1 class="section-title" style="margin-top: 1rem;">Profile: {{ user.username }}</h1>
+        <p style="color: var(--text-muted);">Registered Email: {{ user.email }}</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        
+        <div class="admin-table-container" style="padding: 1.5rem;">
+            <h3 style="color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-boxes"></i> Shop Inventory
+            </h3>
+            <div class="admin-table">
+                {% for p in products %}
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid var(--glass-border);">
+                    <span style="color: var(--text-main);">{{ p.name }}</span>
+                    <span style="color: var(--text-muted);">
+                        <strong style="color: var(--success);">{{ p.remaining }}</strong> left @ PKR {{ p.sale_price }}
+                    </span>
+                </div>
+                {% else %}
+                <p style="color: var(--text-dim); text-align: center;">No products added yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="admin-table-container" style="padding: 1.5rem;">
+            <h3 style="color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-hand-holding-usd"></i> Outstanding Loans
+            </h3>
+            <div class="admin-table">
+                {% for loan in loans %}
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid var(--glass-border);">
+                    <div>
+                        <div style="color: var(--text-main); font-weight: 600;">{{ loan.customer_name }}</div>
+                        <small style="color: var(--text-dim);">{{ loan.product_taken }}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: var(--accent);">PKR {{ "{:,.0f}".format(loan.amount) }}</div>
+                        <span class="badge {{ 'badge-active' if loan.status == 1 else 'badge-deactivated' }}" style="font-size: 0.6rem;">
+                            {{ 'PAID' if loan.status == 1 else 'UNPAID' }}
+                        </span>
+                    </div>
+                </div>
+                {% else %}
+                <p style="color: var(--text-dim); text-align: center;">No loan records found.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
