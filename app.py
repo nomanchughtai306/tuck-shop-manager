@@ -136,6 +136,11 @@ def admin_login():
         flash("Invalid Admin Credentials", "danger")
     return render_template('admin_login.html')
 
+
+@app.route('/clinic', methods=['GET', 'POST'])
+def clinic():
+    return render_template('ZahraClinic.html')
+
 @app.route('/admin/logout')
 def admin_logout():
     session.pop('is_admin', None)
