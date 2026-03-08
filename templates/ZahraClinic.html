@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zahra Clinic | Premium Gynecologist & Women's Healthcare in Rawalpindi</title>
+<meta name="description" content="Zahra Clinic offers expert gynecological care, pregnancy checkups, delivery consultation, and women's health services in Rawalpindi, Gulraiz. Dr. Ruqayya – open 24 hours.">
+<meta name="keywords" content="Gynecologist in Rawalpindi, women health clinic Rawalpindi, pregnancy doctor Rawalpindi, best gynecologist Gulraiz Rawalpindi, maternity clinic Rawalpindi, Dr Ruqayya">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0B4F4A">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="https://img.icons8.com/external-flat-icons-inmotus-design/67/external-Health-Care-medical-flat-icons-inmotus-design.png">
+<link rel="apple-touch-icon" href="https://img.icons8.com/external-flat-icons-inmotus-design/67/external-Health-Care-medical-flat-icons-inmotus-design.png">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["MedicalClinic", "LocalBusiness"],
+  "name": "Zahra Clinic",
+  "description": "Gynecology and Women's Healthcare Clinic in Rawalpindi",
+  "url": "https://zahraclinic.com.pk",
+  "telephone": "+92-334-1534438",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "More, Chaudhary Wilayat Khan Road, Near Wapda Complaint Office, Gulraiz 1 Dhok Chaudhrian",
+    "addressLocality": "Rawalpindi",
+    "postalCode": "46000",
+    "addressCountry": "PK"
+  },
+  "openingHours": "Mo-Su 00:00-23:59",
+  "medicalSpecialty": "Gynecology"
+}
+</script>
+
+<style>
+  /* ──────────── DESIGN TOKENS ──────────── */
+  :root {
+    /* Premium Palette */
+    --primary: #0B4F4A;        /* Deep Emerald / Teal */
+    --primary-light: #E8F2F1;  /* Soft Mint */
+    --accent: #D4AF37;         /* Soft Champagne Gold */
+    --accent-light: #FBF7EF;   /* Very pale gold background */
+    --surface: #FFFFFF;        
+    --background: #FAFAFA;     
+    --text-main: #1C2221;
+    --text-muted: #5F6C6B;
+    --border: #E2E8E8;
+    
+    /* Effects */
+    --shadow-sm: 0 4px 12px rgba(11, 79, 74, 0.04);
+    --shadow-md: 0 12px 32px rgba(11, 79, 74, 0.08);
+    --shadow-lg: 0 24px 48px rgba(11, 79, 74, 0.12);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 999px;
+    
+    /* Transitions */
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+    --trans-fast: 0.3s var(--ease);
+  }
+
+  /* ──────────── RESET & BASE ──────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  html { scroll-behavior: smooth; font-size: 16px; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--background);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, .serif { 
+    font-family: 'Playfair Display', serif; 
+    line-height: 1.2; 
+    color: var(--primary);
+  }
+  
+  h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 600; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; margin-bottom: 1rem; }
+  h3 { font-size: clamp(1.25rem, 2vw, 1.75rem); font-weight: 500; }
+  p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1.5rem; }
+  
+  a { text-decoration: none; color: inherit; transition: color var(--trans-fast); }
+  img { max-width: 100%; display: block; object-fit: cover; }
+  
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 100px 0; }
+  .section-sm { padding: 60px 0; }
+  .text-center { text-align: center; }
+
+  /* ──────────── COMPONENTS ──────────── */
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 32px; border-radius: var(--radius-full);
+    font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500;
+    cursor: pointer; border: 1px solid transparent;
+    transition: all var(--trans-fast);
+    text-align: center;
+  }
+  .btn .material-symbols-outlined { font-size: 1.2rem; }
+  
+  .btn-primary {
+    background: var(--primary); color: var(--surface);
+  }
+  .btn-primary:hover { background: #083c38; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  
+  .btn-outline {
+    background: transparent; color: var(--primary);
+    border-color: var(--primary);
+  }
+  .btn-outline:hover { background: var(--primary); color: var(--surface); }
+  
+  .btn-accent {
+    background: var(--accent); color: var(--surface);
+  }
+  .btn-accent:hover { background: #B39129; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+  .icon-box {
+    width: 56px; height: 56px; border-radius: var(--radius-md);
+    background: var(--primary-light); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .icon-box.gold { background: var(--accent-light); color: var(--accent); }
+
+  /* ──────────── NAVIGATION ──────────── */
+  #navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid transparent;
+    transition: all var(--trans-fast);
+  }
+  #navbar.scrolled { border-bottom-color: var(--border); box-shadow: var(--shadow-sm); }
+  
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 80px; max-width: 1240px; margin: 0 auto; padding: 0 24px;
+  }
+  
+  .nav-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .nav-logo span.material-symbols-outlined { color: var(--accent); font-size: 2rem; }
+  .nav-logo-text h4 { margin: 0; font-size: 1.3rem; letter-spacing: 0.02em; }
+  .nav-logo-text p { margin: 0; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-link {
+    font-size: 0.9rem; font-weight: 500; color: var(--text-muted);
+    cursor: pointer; position: relative;
+  }
+  .nav-link::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+    background: var(--primary); transition: width var(--trans-fast);
+  }
+  .nav-link:hover, .nav-link.active { color: var(--primary); }
+  .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+  
+  .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--primary); transition: var(--trans-fast); }
+  
+  .mobile-menu {
+    display: flex; flex-direction: column; gap: 1rem;
+    position: fixed; top: 80px; left: 0; right: 0; background: var(--surface);
+    padding: 2rem; box-shadow: var(--shadow-md);
+    opacity: 0; pointer-events: none; transform: translateY(-10px); transition: var(--trans-fast);
+  }
+  .mobile-menu.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+  /* ──────────── PAGE SYSTEM ──────────── */
+  .page { display: none; opacity: 0; transition: opacity 0.5s ease; }
+  .page.active { display: block; opacity: 1; }
+
+  /* ──────────── HERO ──────────── */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding-top: 80px; position: relative;
+  }
+  .hero-bg {
+    position: absolute; top: 0; right: 0; width: 50%; height: 100%;
+    background: url('https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=1500&auto=format&fit=crop') center/cover;
+    z-index: 1; border-bottom-left-radius: 40px;
+  }
+  .hero-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to right, var(--background) 45%, rgba(250,250,250,0.2) 100%);
+    z-index: -1;
+  }
+  .hero-inner { max-width: 600px; padding: 4rem 0; margin-right: 650px; }
+  
+  .hero-stats { display: flex; gap: 2.5rem; margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; }
+  .stat h4 { font-size: 2rem; color: var(--accent); margin-bottom: 0.2rem; }
+  .stat p { font-size: 0.8rem; margin: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ──────────── INFO BAND ──────────── */
+  .info-band { background: var(--primary); color: var(--surface); }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+  .info-item { display: flex; gap: 1rem; align-items: center; }
+  .info-item .material-symbols-outlined { color: var(--accent); font-size: 2rem; }
+  .info-item h4 { color: var(--surface); font-family: 'Inter', sans-serif; font-size: 1rem; margin-bottom: 0.2rem; }
+  .info-item p { color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem; }
+
+  /* ──────────── SECTIONS & GRIDS ──────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+  
+  .section-header { text-align: center; max-width: 700px; margin: 0 auto 4rem; }
+  
+  .card {
+    background: var(--surface); border-radius: var(--radius-lg);
+    padding: 2.5rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+    transition: var(--trans-fast);
+  }
+  .card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); border-color: var(--primary-light); }
+
+  /* ──────────── IMAGES & MEDIA ──────────── */
+  .img-wrap { position: relative; border-radius: var(--radius-lg); overflow: hidden; }
+  .img-wrap img { width: 100%; height: auto; aspect-ratio: 4/5; object-fit: cover; }
+  
+  .experience-badge {
+    position: absolute; bottom: 30px; right: -30px;
+    background: var(--surface); padding: 1.5rem; border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg); text-align: center; display: inline-block;
+  }
+  .experience-badge h4 { color: var(--accent); font-size: 2.5rem; margin-bottom: 0; }
+  .experience-badge p { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin: 0; color: var(--text-main); }
+
+  /* ──────────── DOCTOR PROFILE ──────────── */
+  .doctor-card { background: var(--primary-light); border: none; text-align: center; padding: 3rem 2rem; }
+  .doctor-avatar { width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 1.5rem; object-fit: cover; border: 4px solid var(--surface); box-shadow: var(--shadow-sm); }
+
+  /* ──────────── REVIEWS ──────────── */
+  .review-stars { color: var(--accent); margin-bottom: 1rem; letter-spacing: 2px; }
+  .review-text { font-style: italic; color: var(--text-main); font-size: 1.1rem; }
+  .reviewer { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+  .reviewer-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  
+  /* ──────────── FORMS ──────────── */
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-main); }
+  .form-control {
+    width: 100%; padding: 14px 18px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); font-family: 'Inter', sans-serif;
+    background: var(--background); transition: var(--trans-fast);
+  }
+  .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+  textarea.form-control { min-height: 120px; resize: vertical; }
+
+  /* ──────────── FOOTER ──────────── */
+  footer { background: var(--primary); color: rgba(255,255,255,0.8); padding: 5rem 0 2rem; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+  .footer-title { color: var(--surface); font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 0.75rem; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; font-size: 0.9rem; }
+
+  /* ──────────── FLOATING BUTTONS ──────────── */
+  .fab-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 900; }
+  .fab {
+    width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: var(--surface); box-shadow: var(--shadow-md); transition: var(--trans-fast);
+  }
+  .fab:hover { transform: scale(1.05); }
+  .fab-call { background: var(--primary); }
+  .fab-wa { background: #25D366; }
+
+  /* ──────────── ANIMATIONS ──────────── */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* --- Infinite Ticker Styles --- */
+.info-band {
+  background: var(--primary);
+  color: var(--surface);
+  overflow: hidden; /* Hide the overflow from the sliding track */
+  white-space: nowrap;
+  padding: 20px 0;
+}
+
+.ticker-wrapper {
+  display: flex;
+  width: max-content;
+}
+
+.ticker-track {
+  display: flex;
+  align-items: center;
+  gap: 100px; /* Space between items */
+  padding-right: 100px; /* Match the gap for a seamless loop */
+  animation: scrollLeft 30s linear infinite;
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Move half the width (the first set) */
+}
+
+/* Pause on hover so people can read/click */
+.info-band:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+.info-item {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.info-item .material-symbols-outlined { color: var(--accent); font-size: 2rem; }
+.info-item h4 { color: var(--surface); font-family: 'Inter', sans-serif; font-size: 1rem; margin: 0; }
+.info-item p { color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem; }
+
+  /* ──────────── RESPONSIVE ──────────── */
+  @media (max-width: 992px) {
+    .grid-2 { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-bg { width: 100%; opacity: 0.15; border-radius: 0; }
+    .hero-overlay { background: linear-gradient(to bottom, var(--background) 0%, rgba(250,250,250,0.8) 100%); }
+    .experience-badge { right: 20px; bottom: -20px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .hero-stats { flex-direction: column; gap: 1.5rem; }
+    .section { padding: 60px 0; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 1rem; }
+    .hero-inner{
+        margin-right: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      <span class="material-symbols-outlined">spa</span>
+      <div class="nav-logo-text">
+        <h4>Zahra Clinic</h4>
+        <p>Women's Healthcare</p>
+      </div>
+    </div>
+    
+    <div class="nav-links">
+      <span class="nav-link active" data-page="home" onclick="showPage('home')">Home</span>
+      <span class="nav-link" data-page="about" onclick="showPage('about')">About</span>
+      <span class="nav-link" data-page="services" onclick="showPage('services')">Services</span>
+      <span class="nav-link" data-page="doctor" onclick="showPage('doctor')">Dr. Ruqayya</span>
+      <span class="nav-link" data-page="reviews" onclick="showPage('reviews')">Reviews</span>
+      <span class="nav-link" data-page="contact" onclick="showPage('contact')">Contact</span>
+    </div>
+    
+    <div class="nav-cta">
+      <a href="tel:+923341534438" class="btn btn-primary" style="padding: 10px 24px;">
+        <span class="material-symbols-outlined" style="font-size: 18px;">call</span> Call Us
+      </a>
+    </div>
+    
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+  
+  <div class="mobile-menu" id="mobileMenu">
+    <span class="nav-link" onclick="showPage('home')">Home</span>
+    <span class="nav-link" onclick="showPage('about')">About</span>
+    <span class="nav-link" onclick="showPage('services')">Services</span>
+    <span class="nav-link" onclick="showPage('doctor')">Dr. Ruqayya</span>
+    <span class="nav-link" onclick="showPage('reviews')">Reviews</span>
+    <span class="nav-link" onclick="showPage('contact')">Contact</span>
+    <a href="tel:+923341534438" class="btn btn-primary" style="margin-top: 1rem;">Call Now</a>
+  </div>
+</nav>
+
+<div class="page active" id="page-home">
+  
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-inner fade-up">
+        <div class="tag">Premium Care in Rawalpindi</div>
+        <h1>Elevating Women's <br><span style="color: var(--accent);">Healthcare</span></h1>
+        <p>Experience compassionate, expert gynecological and obstetric care in a private, high-end environment. Led by Dr. Ruqayya, available 24/7 for you and your family.</p>
+        
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+          <a href="#" class="btn btn-primary" onclick="showPage('contact'); return false;">Book Consultation</a>
+          <a href="tel:+923341534438" class="btn btn-outline">Emergency Call</a>
+        </div>
+        
+        <div class="hero-stats">
+          <div class="stat">
+            <h4>24/7</h4>
+            <p>Availability</p>
+          </div>
+          <div class="stat">
+            <h4>100%</h4>
+            <p>Women-Focused</p>
+          </div>
+          <div class="stat">
+            <h4>Expert</h4>
+            <p>Specialist Care</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section-sm info-band">
+  <div class="ticker-wrapper">
+    <div class="ticker-track">
+      <div class="info-item">
+        <span class="material-symbols-outlined">schedule</span>
+        <div>
+          <h4>Open 24 Hours</h4>
+          <p>Always here when you need us.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="material-symbols-outlined">location_on</span>
+        <div>
+          <h4>Gulraiz 1, Rawalpindi</h4>
+          <p>Near Wapda Complaint Office.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="material-symbols-outlined">verified_user</span>
+        <div>
+          <h4>Women-Owned</h4>
+          <p>Safe, private, and comfortable.</p>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <span class="material-symbols-outlined">schedule</span>
+        <div>
+          <h4>Open 24 Hours</h4>
+          <p>Always here when you need us.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="material-symbols-outlined">location_on</span>
+        <div>
+          <h4>Gulraiz 1, Rawalpindi</h4>
+          <p>Near Wapda Complaint Office.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="material-symbols-outlined">verified_user</span>
+        <div>
+          <h4>Women-Owned</h4>
+          <p>Safe, private, and comfortable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <section class="section">
+    <div class="container grid-2">
+      <div class="img-wrap fade-up">
+        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop" alt="Clinic Interior">
+        <div class="experience-badge">
+          <h4>Dr. Ruqayya</h4>
+          <p>Lead Specialist</p>
+        </div>
+      </div>
+      <div class="fade-up">
+        <div class="tag">About Zahra Clinic</div>
+        <h2>A Standard of Excellence in Women's Health</h2>
+        <p>Zahra Clinic was founded on the belief that every woman deserves access to premium, respectful, and compassionate healthcare. Located in the heart of Rawalpindi, our facility is designed to provide peace of mind at every stage of life.</p>
+        <p>From routine gynecological screenings to comprehensive maternity care and complex deliveries, our dedicated team ensures your health and comfort are prioritized above all else.</p>
+        <a href="#" class="btn btn-outline" style="margin-top: 1rem;" onclick="showPage('about'); return false;">Discover Our Practice</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Specialties</div>
+        <h2>Comprehensive Care Solutions</h2>
+        <p>Tailored medical services combining advanced clinical expertise with deeply personalized care.</p>
+      </div>
+      
+      <div class="grid-3">
+        <div class="card fade-up">
+          <div class="icon-box"><span class="material-symbols-outlined">pregnant_woman</span></div>
+          <h3>Maternity Care</h3>
+          <p>Comprehensive antenatal monitoring, ensuring the highest standard of health for both mother and developing baby.</p>
+        </div>
+        <div class="card fade-up" style="transition-delay: 0.1s;">
+          <div class="icon-box gold"><span class="material-symbols-outlined">child_care</span></div>
+          <h3>Delivery Consultation</h3>
+          <p>Expert planning and management for natural deliveries and necessary C-sections in a secure environment.</p>
+        </div>
+        <div class="card fade-up" style="transition-delay: 0.2s;">
+          <div class="icon-box"><span class="material-symbols-outlined">gynecology</span></div>
+          <h3>General Gynecology</h3>
+          <p>Routine wellness exams, preventive screenings, and management of complex reproductive health conditions.</p>
+        </div>
+      </div>
+      <div class="text-center" style="margin-top: 4rem;">
+        <a href="#" class="btn btn-primary" onclick="showPage('services'); return false;">View All Services</a>
+      </div>
+    </div>
+  </section>
+
+</div> <div class="page" id="page-about">
+  <div style="height: 80px;"></div>
+  
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Our Heritage</div>
+        <h2>About Zahra Clinic</h2>
+        <p>A sanctuary for women's health, built on trust, expertise, and unwavering compassion.</p>
+      </div>
+      
+      <div class="grid-2" style="margin-bottom: 6rem;">
+        <div class="fade-up">
+          <h3>Our Philosophy</h3>
+          <p>Zahra Clinic was established to elevate the standard of women's healthcare in Rawalpindi. We recognized a vital need for a facility where clinical excellence meets genuine empathy.</p>
+          <p>As a completely women-owned and operated clinic, we profoundly understand the nuances of female health. We have curated a private, serene environment that removes the anxiety typically associated with medical visits, allowing you to focus entirely on your wellness.</p>
+        </div>
+        <div class="img-wrap fade-up">
+          <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" alt="Medical Tools">
+        </div>
+      </div>
+      
+      <div class="grid-3">
+        <div class="card fade-up text-center">
+          <span class="material-symbols-outlined" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;">volunteer_activism</span>
+          <h3>Compassion First</h3>
+          <p>We listen attentively and treat every patient with the dignity and warmth they deserve.</p>
+        </div>
+        <div class="card fade-up text-center" style="transition-delay: 0.1s;">
+          <span class="material-symbols-outlined" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;">verified</span>
+          <h3>Clinical Excellence</h3>
+          <p>Our practices are rooted in modern, evidence-based medicine ensuring the safest outcomes.</p>
+        </div>
+        <div class="card fade-up text-center" style="transition-delay: 0.2s;">
+          <span class="material-symbols-outlined" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;">lock</span>
+          <h3>Absolute Privacy</h3>
+          <p>We maintain a strictly confidential environment, honoring your privacy at every step.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-services">
+  <div style="height: 80px;"></div>
+  
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Expertise</div>
+        <h2>Our Services</h2>
+        <p>Comprehensive, specialized care spanning all phases of a woman's life.</p>
+      </div>
+      
+      <div class="grid-3">
+        <div class="card fade-up">
+          <div class="icon-box"><span class="material-symbols-outlined">pregnant_woman</span></div>
+          <h3>Antenatal Care</h3>
+          <p>Detailed pregnancy monitoring, including nutritional guidance, fetal growth tracking, and risk assessment.</p>
+        </div>
+        <div class="card fade-up">
+          <div class="icon-box gold"><span class="material-symbols-outlined">child_care</span></div>
+          <h3>Normal Delivery</h3>
+          <p>Supportive management of vaginal births, focusing on maternal comfort, safety, and empowering birth plans.</p>
+        </div>
+        <div class="card fade-up">
+          <div class="icon-box"><span class="material-symbols-outlined">local_hospital</span></div>
+          <h3>C-Section Procedures</h3>
+          <p>Expert surgical intervention when medically necessary, complete with rigorous post-operative care.</p>
+        </div>
+        <div class="card fade-up">
+          <div class="icon-box gold"><span class="material-symbols-outlined">healing</span></div>
+          <h3>Reproductive Health</h3>
+          <p>Diagnosis and management of PCOS, endometriosis, hormonal imbalances, and menstrual irregularities.</p>
+        </div>
+        <div class="card fade-up">
+          <div class="icon-box"><span class="material-symbols-outlined">family_restroom</span></div>
+          <h3>Family Planning</h3>
+          <p>Confidential counseling and administration of modern contraceptive methods tailored to your lifestyle.</p>
+        </div>
+        <div class="card fade-up">
+          <div class="icon-box gold"><span class="material-symbols-outlined">biotech</span></div>
+          <h3>Fertility Consulting</h3>
+          <p>Initial assessments and compassionate guidance for couples navigating the journey to conception.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-doctor">
+  <div style="height: 80px;"></div>
+  
+  <section class="section">
+    <div class="container grid-2">
+      <div class="card doctor-card fade-up">
+        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop" alt="Dr. Ruqayya" class="doctor-avatar">
+        <h3>Dr. Ruqayya</h3>
+        <p style="color: var(--primary); font-weight: 500;">MBBS · Chief Gynecologist & Obstetrician</p>
+        <p style="font-size: 0.9rem;">Leading Zahra Clinic with a dedication to empowering women through exceptional healthcare.</p>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 1.5rem;">
+          <a href="tel:+923341534438" class="btn btn-primary" style="padding: 10px 20px;">Book Visit</a>
+        </div>
+      </div>
+      
+      <div class="fade-up">
+        <div class="tag">Lead Physician</div>
+        <h2>Meet Dr. Ruqayya</h2>
+        <p class="serif" style="font-size: 1.4rem; font-style: italic; color: var(--text-main); margin-bottom: 1.5rem; border-left: 3px solid var(--accent); padding-left: 1rem;">
+          "Every woman deserves to be heard, respected, and treated with the highest caliber of medical expertise."
+        </p>
+        <p>As the founder and lead practitioner at Zahra Clinic, Dr. Ruqayya brings years of intensive experience in obstetrics and gynecology. Her approach to medicine is deeply holistic—combining rigorous clinical protocols with a comforting, personalized bedside manner.</p>
+        <p>Understanding that women's health issues can be sensitive, Dr. Ruqayya ensures that consultations are never rushed. She takes the time necessary to explain diagnoses, outline options, and partner with patients to make informed health decisions.</p>
+        
+        <h4 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--primary);">Core Competencies</h4>
+        <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <li style="display: flex; align-items: center; gap: 8px;"><span class="material-symbols-outlined" style="color: var(--accent); font-size: 1.2rem;">check_circle</span> Complex Pregnancies</li>
+          <li style="display: flex; align-items: center; gap: 8px;"><span class="material-symbols-outlined" style="color: var(--accent); font-size: 1.2rem;">check_circle</span> Minimally Invasive Care</li>
+          <li style="display: flex; align-items: center; gap: 8px;"><span class="material-symbols-outlined" style="color: var(--accent); font-size: 1.2rem;">check_circle</span> Obstetric Surgery</li>
+          <li style="display: flex; align-items: center; gap: 8px;"><span class="material-symbols-outlined" style="color: var(--accent); font-size: 1.2rem;">check_circle</span> Preventive Screenings</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-reviews">
+  <div style="height: 80px;"></div>
+  
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Patient Stories</div>
+        <h2>Words from Our Patients</h2>
+        <p>We measure our success by the health, happiness, and comfort of the women we treat.</p>
+      </div>
+      
+      <div class="grid-3">
+        <div class="card fade-up">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"An incredibly pristine facility. Dr. Ruqayya provided me with exceptional care throughout my entire pregnancy. I felt entirely safe and supported. Highly recommended."</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">A</div>
+            <div>
+              <h4 style="font-size: 1rem; margin: 0; font-family: 'Inter', sans-serif;">Aisha B.</h4>
+              <p style="font-size: 0.8rem; margin: 0;">Verified Patient</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card fade-up" style="transition-delay: 0.1s;">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"The level of professionalism here is unmatched in Rawalpindi. The clinic is beautiful, calm, and Dr. Ruqayya takes the time to listen thoroughly without rushing."</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">F</div>
+            <div>
+              <h4 style="font-size: 1rem; margin: 0; font-family: 'Inter', sans-serif;">Fatima K.</h4>
+              <p style="font-size: 0.8rem; margin: 0;">Verified Patient</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card fade-up" style="transition-delay: 0.2s;">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Finding a 24-hour clinic with this level of quality in Gulraiz was a blessing. I had an urgent concern late at night, and the staff handled it with incredible grace and expertise."</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">S</div>
+            <div>
+              <h4 style="font-size: 1rem; margin: 0; font-family: 'Inter', sans-serif;">Sana M.</h4>
+              <p style="font-size: 0.8rem; margin: 0;">Verified Patient</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card fade-up text-center" style="margin-top: 4rem; background: var(--primary-light); border: none;">
+        <h3>Share Your Experience</h3>
+        <p style="max-width: 500px; margin: 0 auto 1.5rem;">Your feedback allows us to continuously elevate our standard of care.</p>
+        <a href="#" class="btn btn-primary">Leave a Google Review</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-contact">
+  <div style="height: 80px;"></div>
+  
+  <section class="section">
+    <div class="container grid-2">
+      <div class="fade-up">
+        <div class="tag">Connect With Us</div>
+        <h2>Request an Appointment</h2>
+        <p>Whether for a routine checkup or an urgent consultation, our doors are open 24/7. Reach out via the form, or contact us directly.</p>
+        
+        <div style="margin-top: 3rem;">
+          <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start;">
+            <span class="material-symbols-outlined" style="color: var(--accent); font-size: 2rem;">location_on</span>
+            <div>
+              <h4 style="font-size: 1.1rem; margin-bottom: 0.2rem; font-family: 'Inter', sans-serif;">Clinic Location</h4>
+              <p style="margin: 0; font-size: 0.95rem;">More, Chaudhary Wilayat Khan Road<br>Near Wapda Complaint Office<br>Gulraiz 1, Dhok Chaudhrian, Rawalpindi</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start;">
+            <span class="material-symbols-outlined" style="color: var(--accent); font-size: 2rem;">call</span>
+            <div>
+              <h4 style="font-size: 1.1rem; margin-bottom: 0.2rem; font-family: 'Inter', sans-serif;">Direct Contact</h4>
+              <p style="margin: 0; font-size: 0.95rem;">+92 334 1534438</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card fade-up">
+        <div id="formSuccess" style="display:none; padding: 1rem; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-sm); margin-bottom: 1.5rem; text-align: center; font-weight: 500;">
+          Request submitted. Our staff will contact you shortly to confirm.
+        </div>
+        <form onsubmit="submitForm(event)">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control" id="fname" placeholder="Jane Doe" required>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" class="form-control" id="fphone" placeholder="+92 3XX XXXXXXX" required>
+          </div>
+          <div class="form-group">
+            <label>Service Required</label>
+            <select class="form-control" id="fservice">
+              <option value="">Select an option</option>
+              <option>Pregnancy Consultation</option>
+              <option>General Checkup</option>
+              <option>Other Services</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Additional Details</label>
+            <textarea class="form-control" id="fmessage" placeholder="Briefly describe your reason for visiting..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Request</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="nav-logo" style="margin-bottom: 1.5rem; color: var(--surface);">
+          <span class="material-symbols-outlined" style="color: var(--accent);">spa</span>
+          <div class="nav-logo-text">
+            <h4 style="color: var(--surface);">Zahra Clinic</h4>
+            <p style="color: rgba(255,255,255,0.6);">Women's Healthcare</p>
+          </div>
+        </div>
+        <p style="color: rgba(255,255,255,0.7); max-width: 300px;">Providing premium, compassionate, and expert gynecological care to the women of Rawalpindi.</p>
+      </div>
+      
+      <div>
+        <h4 class="footer-title">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
+          <li><a href="#" onclick="showPage('about'); return false;">About Clinic</a></li>
+          <li><a href="#" onclick="showPage('services'); return false;">Medical Services</a></li>
+          <li><a href="#" onclick="showPage('doctor'); return false;">Dr. Ruqayya</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h4 class="footer-title">Contact</h4>
+        <ul class="footer-links">
+          <li>Gulraiz 1, Rawalpindi</li>
+          <li>+92 334 1534438</li>
+          <li>Open 24 Hours</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div>&copy; 2026 Zahra Clinic. All rights reserved.</div>
+      <div>Designed for Excellence in Healthcare</div>
+    </div>
+  </div>
+</footer>
+
+<div class="fab-container">
+  <a href="tel:+923341534438" class="fab fab-call" title="Call Clinic">
+    <span class="material-symbols-outlined">call</span>
+  </a>
+  <a href="https://wa.me/923341534438" target="_blank" class="fab fab-wa" title="WhatsApp Us">
+    <span class="material-symbols-outlined">chat</span>
+  </a>
+</div>
+
+<script>
+  // Page Navigation System
+  function showPage(pageId) {
+    // Hide all pages with fade
+    document.querySelectorAll('.page').forEach(page => {
+      page.style.opacity = '0';
+      setTimeout(() => {
+        page.classList.remove('active');
+      }, 300); // match transition time
+    });
+    
+    // Show new page
+    setTimeout(() => {
+      const activePage = document.getElementById('page-' + pageId);
+      activePage.classList.add('active');
+      // small delay to allow display:block to apply before animating opacity
+      setTimeout(() => activePage.style.opacity = '1', 50);
+      
+      // Re-trigger scroll observer for new elements
+      initObserver();
+    }, 300);
+
+    // Update Nav Links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.toggle('active', link.dataset.page === pageId);
+    });
+    
+    // Close Mobile Menu and Scroll Top
+    document.getElementById('mobileMenu').classList.remove('open');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Mobile Menu Toggle
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // Navbar Scroll Effect
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  // Modern Intersection Observer for smooth reveal animations
+  let observer;
+  function initObserver() {
+    if (observer) observer.disconnect();
+    
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // Only animate once
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px"
+    });
+
+    document.querySelectorAll('.page.active .fade-up').forEach(el => {
+      el.classList.remove('visible'); // Reset
+      observer.observe(el);
+    });
+  }
+
+  // Handle Form Submission visually
+  function submitForm(e) {
+    e.preventDefault();
+    document.getElementById('formSuccess').style.display = 'block';
+    e.target.reset();
+    setTimeout(() => {
+      document.getElementById('formSuccess').style.display = 'none';
+    }, 5000);
+  }
+
+  // Initialize
+  window.addEventListener('DOMContentLoaded', () => {
+    initObserver();
+  });
+</script>
+</body>
+</html>
